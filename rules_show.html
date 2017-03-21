@@ -1,0 +1,1576 @@
+<!doctype html>
+<html lang="zh-cn">
+<head>
+    <meta name="viewport" content="initial-scale=1, user-scalable=0, minimal-ui" charset="UTF-8">
+    <title>法规</title>
+    <script src="js/size.js"></script>
+    <link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css">
+    <script src="//cdn.bootcss.com/jquery/3.1.0/jquery.min.js"></script>
+    <script src="js/dropload.min.js"></script>
+    <style>
+    body,html{
+        padding:0;  margin:0;  border:0;
+        width:100%;height:100%;
+        background: #F0F1F5;
+        font-size:0.28rem;color:#323232;
+        -webkit-user-select:none;
+        -webkit-text-size-adjust:none;
+        overflow: hidden;
+        /*font-family: PingFangSC-Semibold, sans-serif;*/
+    }
+    table,tbody,tr,th,td{
+        border:0;padding:0;margin:0;
+    }
+    a{
+        text-decoration: none;
+    }
+    .outer{
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        display: -webkit-box;
+        display: -webkit-flex;
+        display: -ms-flexbox;
+        display: flex;
+        -ms-flex-direction:column;
+        -webkit-box-orient:vertical;
+        box-orient:vertical;
+        -webkit-flex-direction:column;
+        flex-direction:column;
+    }
+    #show_header {
+        position:relative; top:0; left:0;
+        width:100%;height:0.9rem;
+        padding:0.15rem;box-sizing: border-box;
+    }
+    .show_search{
+        width:100%;height:100%;display: flex;
+        justify-content: space-around;
+    }
+    .show_search input[type=search]{
+        width:85%;height:100%;
+        border:0;border-radius: 0.04rem;
+        font-size: 0.28rem;color:#8D8D8D;
+        padding:0 0.2rem;box-sizing: border-box;
+    }
+    .show_search .search_top,.show_search .search_bottom{
+        display:inline-block;font-size: 0.46rem;color:#8D8D8D;
+        width:0.28rem;height:0.28rem;margin:0.1rem 0;line-height: 0.28rem;
+        text-align: center;
+    }
+    .show_content{
+        width:100%;background: white;
+        position:relative;top:0;left:0;
+        padding:0.3rem 0.25rem 0;
+        box-sizing: border-box;z-index: 5;
+    }
+    .show_title {
+        font-size: 0.4rem;font-weight: bold;
+        margin:0;line-height: 0.5rem;
+        border-bottom: 0.02rem solid #f0f1f5;
+        padding-bottom: 0.3rem;
+    }
+    .inner{
+        -webkit-box-flex: 1;
+        -webkit-flex: 1;
+        -ms-flex: 1;
+        flex: 1;
+        background-color: #fff;
+        overflow-y: scroll;
+        -webkit-overflow-scrolling: touch;
+        padding:0 0.25rem;
+    }
+    .inner .item{
+        display: -webkit-box;
+        display: -webkit-flex;
+        display: -ms-flexbox;
+        display: flex;
+        -ms-flex-align:center;
+        -webkit-box-align:center;
+        box-align:center;
+        -webkit-align-items:center;
+        align-items:center;
+        padding:3.125%;
+        border-bottom: 1px solid #ddd;
+        color: #333;
+        text-decoration: none;
+    }
+    .inner .item img{
+        display: block;
+        width: 40px;
+        height: 40px;
+        border:1px solid #ddd;
+    }
+    .inner .item h3{
+        display: block;
+        -webkit-box-flex: 1;
+        -webkit-flex: 1;
+        -ms-flex: 1;
+        flex: 1;
+        width: 100%;
+        max-height: 40px;
+        overflow: hidden;
+        line-height: 20px;
+        margin: 0 10px;
+        font-size: 0.2rem;
+    }
+    .inner .item .date{
+        display: block;
+        height: 20px;
+        line-height: 20px;
+        color: #999;
+    }
+    /*底部选项栏*/
+    .show_footer{
+        position:relative;  bottom:0; left:0;
+        width:100%;  height:0.9rem;
+        -moz-box-shadow:0rem -0.05rem 0.13rem rgba(0,0,0,.08);
+        -webkit-box-shadow:0rem -0.05rem 0.13rem rgba(0,0,0,.08);
+        box-shadow:0rem -0.05rem 0.13rem rgba(0,0,0,.08);
+        display: flex;justify-content: space-between;
+        background: white;
+    }
+    .show_footer .show_items {
+        width:33.333%;height:100%;display:block;text-align: center;
+        color:#767877;font-size: 0.24rem;text-decoration: none;
+    }
+    .show_footer .show_items.active{
+        color:#f6900c;
+    }
+    .show_footer .show_items span{
+        display: block;width: 100%;
+    }
+    .show_shareIcon, .show_collectIcon, .show_relativeIcon{
+        height:50%;
+    }
+    .show_list,.returnTop{
+        width:0.9rem;height:0.9rem;border-radius: 50%;
+        background: rgba(0,0,0,.6);color:#fff;
+        text-align: center; line-height: 0.9rem;
+        position:fixed;bottom:2.4rem;right:0.5rem;
+        z-index: 10;
+    }
+    .returnTop{
+        bottom:1.3rem;
+    }
+    .property{
+        font-size: 0.24rem;  color: #8d8d8d;
+        padding-bottom: 0.15rem;padding-top: 0.1rem;
+        border-bottom: 0.02rem solid #f0f1f5;
+        margin: 0.1rem 0 0.4rem;
+    }
+    .property p{
+        margin:0;
+    }
+    .property .p_unit{
+        margin-bottom: 0.1rem;
+    }
+    .p_unit span{
+        display: inline-block;width:0.8rem;height:0.4rem;
+        border-radius:1rem;
+        text-align: center;line-height: 0.4rem;margin-right: 0.1rem;
+    }
+    .p_font, .p_date, .p_area, .p_dateE{
+        display: inline-block;width:49%;
+    }
+    .p_date,.p_dateE{
+        text-align: right;
+    }
+    .show_text p{
+        font-size: 0.3rem;color:#444;
+        line-height: 0.43rem;
+        margin:0.15rem 0;text-indent: 0.6rem;
+    }
+    .show_text .show_rise{
+        text-indent: 0;
+    }
+    .show_text .chapter{
+        font-size: 0.3rem;color:#323232;font-weight: bold;
+        margin-top: 0.5rem;margin-bottom:0.3rem;
+    }
+    .show_text table{
+        width:100%;height:auto;
+        -moz-box-flex: 1;-webkit-box-flex: 1;
+        box-flex:1;text-align: center;font-size: 0.24rem;
+        border-collapse: collapse;color:#323232;
+        margin-bottom: 0.15rem;
+    }
+    .table{
+         width:100%;height:auto;overflow-x: scroll;
+        font-size: 0.3rem;font-weight: bold;
+     }
+    #table_border{
+        background:  -webkit-linear-gradient(left,white, orange);;
+    }
+    .show_list_con{
+        width:5rem;height:100%;background: #f0f1f5;
+        position:absolute;right:-5rem;top:0;
+        list-style: none;padding:0;margin:0;
+        z-index: 199;overflow: scroll;
+        /*animation: listshow 0.5s linear forwards;*/
+        -webkit-overflow-scrolling:touch;
+    }
+    .show_list_con li{
+        width:100%;height:0.6rem;background: lightblue;
+    }
+    @keyframes listshow {
+        0% {
+            position:absolute;top:0;
+            right:-5rem;display: none;
+        }
+        100% {
+            position:absolute;top:0;
+            right:0;display: block;
+        }
+    }
+    @keyframes listhide{
+        0% {
+            position:absolute;top:0;
+            right:0;display: block;
+        }
+        100% {
+            position:absolute;top:0;
+            right:-5rem;display: none;
+        }
+    }
+    .show_shadow{
+        display: block;overflow: hidden;
+        width:100%;height:100%;background: rgba(0,0,0,.5);
+        position:absolute;left:0;top:0;z-index: -5;
+        /*-webkit-overflow-scrolling:touch;*/
+    }
+
+    .am-share {
+        font-size: 0.28rem;
+        border-radius: 0;
+        bottom: 0;
+        left: 0;
+        position: fixed;
+        text-align: center;
+        -webkit-transform: translateY(100%);
+        -ms-transform: translateY(100%);
+        transform: translateY(100%);
+        -webkit-transition: -webkit-transform 300ms;
+        transition: transform 300ms;
+        width: 100%;
+        z-index: 99;
+    }
+    .am-modal-active {
+        transform: translateY(0px);
+        -webkit-transform: translateY(0);
+        -ms-transform: translateY(0);
+        transform: translateY(0)
+    }
+    .am-modal-out {
+        z-index: 80;
+        -webkit-transform: translateY(100%);
+        -ms-transform: translateY(100%);
+        transform: translateY(100%)
+    }
+    .am-share-title {
+        background-color: #f8f8f8;
+        border-bottom: 0.01rem solid #fff;
+        border-top-left-radius: 0.02rem;
+        border-top-right-radius: 0.02rem;
+        color: #555;
+        font-size: 0.28rem;
+        font-weight: 400;
+        margin: 0 0.1rem;
+        padding: 0.1rem 0 0;
+        text-align: center;
+    }
+    .am-share-title::after {
+        border-bottom: 0.01rem solid #dfdfdf;
+        content: "";
+        display: block;
+        height: 0;
+        margin-top: 0.1rem;
+        width: 100%;
+    }
+    .am-share-footer {
+        margin: 0.1rem;
+    }
+    .am-share-footer .share_btn {
+        color: #555;
+        display: block;
+        width: 100%;
+        height:0.8rem;
+        font-size: 0.28rem;
+        background-color: #e6e6e6;
+        border: 0.01rem solid #e6e6e6;
+        border-radius: 0;
+        cursor: pointer;
+        text-align: center;
+        transition: background-color 300ms ease-out 0s, border-color 300ms ease-out 0s;
+        vertical-align: middle;
+        white-space: nowrap;
+        font-family: "微软雅黑";
+    }
+    .am-share-sns {
+        background-color: #f8f8f8;
+        border-radius: 0 0 2px 2px;
+        margin: 0 0.1rem;
+        height: auto;
+        zoom: 1;
+        overflow: auto;
+        display: flex;padding:0;align-items: center;
+        justify-content: space-around;height:2rem;
+    }
+    .am-share-sns li {
+        display: block;
+        height: auto;
+        width: 25%;
+    }
+    .am-share-sns a {
+        color: #555;
+        display: block;
+        text-decoration: none;
+    }
+    .am-share-sns span {
+        display: block;
+    }
+    .am-share-sns li i {
+        background-position: center 50%;
+        background-repeat: no-repeat;
+        background-size: 0.36rem 0.36rem;
+        background-color: #ccc;
+        color: #fff;
+        display: inline-block;
+        height: 0.9rem;
+        line-height: 0.9rem;
+        margin-bottom:0.05rem;
+        width: 0.9rem;
+    }
+    .am-share-sns .share-icon-weibo {
+        background-image: url();
+    }
+    .sharebg {
+        background-color: rgba(0, 0, 0, 0.6);
+        bottom: 0;
+        height: 100%;
+        left: 0;
+        opacity: 0;
+        position: fixed;
+        right: 0;
+        top: 0;
+        width: 100%;
+        z-index: 70;
+        display: none;
+    }
+    .sharebg-active {
+        opacity: 1;
+        display: block;
+    }
+    </style>
+    <link rel="stylesheet" href="css/dropload.css">
+</head>
+<body>
+<div class="outer">
+    <div id="show_header">
+        <div class="show_search">
+            <input type="search" placeholder="搜索">
+            <p class="search_top">∧</p>
+            <p class="search_bottom">∨</p>
+        </div>
+    </div>
+    <div class="show_content">
+        <h1 class="show_title">
+            中国证监会《<上市公司收购管理办法>第七十四条第9号》（2011年）
+        </h1>
+    </div>
+    <div class="inner">
+        <div class="lists">
+            <div class="property">
+                <p class="p_unit">
+                    <span style="color:#AD4040;border:0.01rem solid #AD4040;">沪主</span>
+                    <span style="color:#404F9E;border:0.01rem solid #404F9E;">深主</span>
+                    <span style="color:#404F9E;border:0.01rem solid #404F9E;">中小</span>
+                    <span style="color:#404F9E;border:0.01rem solid #404F9E;">创业</span>
+                    <span style="color:#F69640;border:0.01rem solid #F69640;">三板</span>
+                </p>
+                <p class="p_font">发文字号：<span>上证发[2014]65号</span></p>
+                <p class="p_date">发布日期：<span>2014年10月11日</span></p>
+                <p class="p_area">适用单位：<span>银监会 / 保监会 ...</span></p>
+                <p class="p_dateE">生效日期：<span>2014年10月11日</span></p>
+            </div>
+            <div class="show_text">
+                <p class="show_rise">各市场参与人：</p>
+                <p>为进一步完善上市公司退市制度，上海证券交易所以下简称“本所”。根据中国证监会《关于改革完善并严格实施上市公司退市制度的若干意见》（以下简称“《退市意见》”），已经本所理事会审议通过并报经中国证监会批准现予以发布，自2014年11月16日起施行。原《上市规则》同时同时同时废止。
+                    </p>
+                <h2 class="chapter">
+                    第一章 总则
+                </h2>
+                <p>公司控制权发生变更的，自控制权发生变更之日起，公司向收购人及其关联人购买的资产总额，占公司控制权发生变更的前一个会计年度经审计的合并财务会计报告期末资产总额的比例达到100%以上。
+                    </p>
+                <div id="table_border"></div>
+                <div class="table">
+                    <table border="1" cellpadding="0" cellspacing="0" class="MsoNormalTable" style="border-collapse:collapse;border:none;mso-border-alt:outset black .75pt;
+ mso-yfti-tbllook:1184;mso-padding-alt:1.5pt 1.5pt 1.5pt 1.5pt">
+                        <tbody>
+                        <tr style="mso-yfti-irow:0;mso-yfti-firstrow:yes">
+                            <td nowrap="nowrap" style="width:24.0%;border:inset black 1.0pt;
+  mso-border-alt:inset black .75pt;padding:1.5pt 1.5pt 1.5pt 1.5pt" width="24%">
+                                <p class="MsoNormal" style="text-align: justify;"><span style="font-family:宋体;mso-ascii-font-family:Calibri;
+  mso-ascii-theme-font:minor-latin;mso-fareast-font-family:宋体;mso-fareast-theme-font:
+  minor-fareast;mso-hansi-font-family:Calibri;mso-hansi-theme-font:minor-latin">固定资产类别</span><span lang="EN-US"><o:p></o:p></span></p>
+                            </td>
+                            <td colspan="2" nowrap="nowrap" style="width:51.0%;border:inset black 1.0pt;
+  border-left:none;mso-border-left-alt:inset black .75pt;mso-border-alt:inset black .75pt;
+  padding:1.5pt 1.5pt 1.5pt 1.5pt" width="51%">
+                                <p class="MsoNormal" style="text-align: justify;"><span style="font-family:宋体;mso-ascii-font-family:Calibri;
+  mso-ascii-theme-font:minor-latin;mso-fareast-font-family:宋体;mso-fareast-theme-font:
+  minor-fareast;mso-hansi-font-family:Calibri;mso-hansi-theme-font:minor-latin">内容</span><span lang="EN-US"><o:p></o:p></span></p>
+                            </td>
+                            <td nowrap="nowrap" style="width:24.0%;border:inset black 1.0pt;
+  border-left:none;mso-border-left-alt:inset black .75pt;mso-border-alt:inset black .75pt;
+  padding:1.5pt 1.5pt 1.5pt 1.5pt" width="24%">
+                                <p class="MsoNormal" style="text-align: justify;"><span style="font-family:宋体;mso-ascii-font-family:Calibri;
+  mso-ascii-theme-font:minor-latin;mso-fareast-font-family:宋体;mso-fareast-theme-font:
+  minor-fareast;mso-hansi-font-family:Calibri;mso-hansi-theme-font:minor-latin">折旧年限（年）</span><span lang="EN-US"><o:p></o:p></span></p>
+                            </td>
+                        </tr>
+                        <tr style="mso-yfti-irow:1">
+                            <td nowrap="nowrap" rowspan="7" style="width:24.0%;border:inset black 1.0pt;
+  border-top:none;mso-border-top-alt:inset black .75pt;mso-border-alt:inset black .75pt;
+  padding:1.5pt 1.5pt 1.5pt 1.5pt" width="24%">
+                                <p class="MsoNormal" style="text-align: justify;"><span style="font-family:宋体;mso-ascii-font-family:Calibri;
+  mso-ascii-theme-font:minor-latin;mso-fareast-font-family:宋体;mso-fareast-theme-font:
+  minor-fareast;mso-hansi-font-family:Calibri;mso-hansi-theme-font:minor-latin">房屋及构筑物</span><span lang="EN-US"><o:p></o:p></span></p>
+                            </td>
+                            <td nowrap="nowrap" rowspan="4" style="width:18.0%;border-top:none;
+  border-left:none;border-bottom:inset black 1.0pt;border-right:inset black 1.0pt;
+  mso-border-top-alt:inset black .75pt;mso-border-left-alt:inset black .75pt;
+  mso-border-alt:inset black .75pt;padding:1.5pt 1.5pt 1.5pt 1.5pt" width="18%">
+                                <p class="MsoNormal" style="text-align: justify;"><span style="font-family:宋体;mso-ascii-font-family:Calibri;
+  mso-ascii-theme-font:minor-latin;mso-fareast-font-family:宋体;mso-fareast-theme-font:
+  minor-fareast;mso-hansi-font-family:Calibri;mso-hansi-theme-font:minor-latin">业务及管理用房</span><span lang="EN-US"><o:p></o:p></span></p>
+                            </td>
+                            <td style="width:32.0%;border-top:none;border-left:none;
+  border-bottom:inset black 1.0pt;border-right:inset black 1.0pt;mso-border-top-alt:
+  inset black .75pt;mso-border-left-alt:inset black .75pt;mso-border-alt:inset black .75pt;
+  padding:1.5pt 1.5pt 1.5pt 1.5pt" width="32%">
+                                <p class="MsoNormal" style="text-align: justify;"><span style="font-family:宋体;mso-ascii-font-family:Calibri;
+  mso-ascii-theme-font:minor-latin;mso-fareast-font-family:宋体;mso-fareast-theme-font:
+  minor-fareast;mso-hansi-font-family:Calibri;mso-hansi-theme-font:minor-latin">钢结构</span><span lang="EN-US"><o:p></o:p></span></p>
+                            </td>
+                            <td nowrap="nowrap" style="width:24.0%;border-top:none;border-left:none;
+  border-bottom:inset black 1.0pt;border-right:inset black 1.0pt;mso-border-top-alt:
+  inset black .75pt;mso-border-left-alt:inset black .75pt;mso-border-alt:inset black .75pt;
+  padding:1.5pt 1.5pt 1.5pt 1.5pt" width="24%">
+                                <p class="MsoNormal" style="text-align: justify;"><span style="font-family:宋体;mso-ascii-font-family:Calibri;
+  mso-ascii-theme-font:minor-latin;mso-fareast-font-family:宋体;mso-fareast-theme-font:
+  minor-fareast;mso-hansi-font-family:Calibri;mso-hansi-theme-font:minor-latin">不低于</span><span lang="EN-US">50<o:p></o:p></span></p>
+                            </td>
+                        </tr>
+                        <tr style="mso-yfti-irow:2">
+                            <td style="width:32.0%;border-top:none;border-left:none;
+  border-bottom:inset black 1.0pt;border-right:inset black 1.0pt;mso-border-top-alt:
+  inset black .75pt;mso-border-left-alt:inset black .75pt;mso-border-alt:inset black .75pt;
+  padding:1.5pt 1.5pt 1.5pt 1.5pt" width="32%">
+                                <p class="MsoNormal" style="text-align: justify;"><span style="font-family:宋体;mso-ascii-font-family:Calibri;
+  mso-ascii-theme-font:minor-latin;mso-fareast-font-family:宋体;mso-fareast-theme-font:
+  minor-fareast;mso-hansi-font-family:Calibri;mso-hansi-theme-font:minor-latin">钢筋混凝土结构</span><span lang="EN-US"><o:p></o:p></span></p>
+                            </td>
+                            <td nowrap="nowrap" style="width:24.0%;border-top:none;border-left:none;
+  border-bottom:inset black 1.0pt;border-right:inset black 1.0pt;mso-border-top-alt:
+  inset black .75pt;mso-border-left-alt:inset black .75pt;mso-border-alt:inset black .75pt;
+  padding:1.5pt 1.5pt 1.5pt 1.5pt" width="24%">
+                                <p class="MsoNormal" style="text-align: justify;"><span style="font-family:宋体;mso-ascii-font-family:Calibri;
+  mso-ascii-theme-font:minor-latin;mso-fareast-font-family:宋体;mso-fareast-theme-font:
+  minor-fareast;mso-hansi-font-family:Calibri;mso-hansi-theme-font:minor-latin">不低于</span><span lang="EN-US">50<o:p></o:p></span></p>
+                            </td>
+                        </tr>
+                        <tr style="mso-yfti-irow:3">
+                            <td style="width:32.0%;border-top:none;border-left:none;
+  border-bottom:inset black 1.0pt;border-right:inset black 1.0pt;mso-border-top-alt:
+  inset black .75pt;mso-border-left-alt:inset black .75pt;mso-border-alt:inset black .75pt;
+  padding:1.5pt 1.5pt 1.5pt 1.5pt" width="32%">
+                                <p class="MsoNormal" style="text-align: justify;"><span style="font-family:宋体;mso-ascii-font-family:Calibri;
+  mso-ascii-theme-font:minor-latin;mso-fareast-font-family:宋体;mso-fareast-theme-font:
+  minor-fareast;mso-hansi-font-family:Calibri;mso-hansi-theme-font:minor-latin">砖混结构</span><span lang="EN-US"><o:p></o:p></span></p>
+                            </td>
+                            <td nowrap="nowrap" style="width:24.0%;border-top:none;border-left:none;
+  border-bottom:inset black 1.0pt;border-right:inset black 1.0pt;mso-border-top-alt:
+  inset black .75pt;mso-border-left-alt:inset black .75pt;mso-border-alt:inset black .75pt;
+  padding:1.5pt 1.5pt 1.5pt 1.5pt" width="24%">
+                                <p class="MsoNormal" style="text-align: justify;"><span style="font-family:宋体;mso-ascii-font-family:Calibri;
+  mso-ascii-theme-font:minor-latin;mso-fareast-font-family:宋体;mso-fareast-theme-font:
+  minor-fareast;mso-hansi-font-family:Calibri;mso-hansi-theme-font:minor-latin">不低于</span><span lang="EN-US">30<o:p></o:p></span></p>
+                            </td>
+                        </tr>
+                        <tr style="mso-yfti-irow:4">
+                            <td style="width:32.0%;border-top:none;border-left:none;
+  border-bottom:inset black 1.0pt;border-right:inset black 1.0pt;mso-border-top-alt:
+  inset black .75pt;mso-border-left-alt:inset black .75pt;mso-border-alt:inset black .75pt;
+  padding:1.5pt 1.5pt 1.5pt 1.5pt" width="32%">
+                                <p class="MsoNormal" style="text-align: justify;"><span style="font-family:宋体;mso-ascii-font-family:Calibri;
+  mso-ascii-theme-font:minor-latin;mso-fareast-font-family:宋体;mso-fareast-theme-font:
+  minor-fareast;mso-hansi-font-family:Calibri;mso-hansi-theme-font:minor-latin">砖木结构</span><span lang="EN-US"><o:p></o:p></span></p>
+                            </td>
+                            <td nowrap="nowrap" style="width:24.0%;border-top:none;border-left:none;
+  border-bottom:inset black 1.0pt;border-right:inset black 1.0pt;mso-border-top-alt:
+  inset black .75pt;mso-border-left-alt:inset black .75pt;mso-border-alt:inset black .75pt;
+  padding:1.5pt 1.5pt 1.5pt 1.5pt" width="24%">
+                                <p class="MsoNormal" style="text-align: justify;"><span style="font-family:宋体;mso-ascii-font-family:Calibri;
+  mso-ascii-theme-font:minor-latin;mso-fareast-font-family:宋体;mso-fareast-theme-font:
+  minor-fareast;mso-hansi-font-family:Calibri;mso-hansi-theme-font:minor-latin">不低于</span><span lang="EN-US">30<o:p></o:p></span></p>
+                            </td>
+                        </tr>
+                        <tr style="mso-yfti-irow:5">
+                            <td colspan="2" nowrap="nowrap" style="width:51.0%;border-top:none;
+  border-left:none;border-bottom:inset black 1.0pt;border-right:inset black 1.0pt;
+  mso-border-top-alt:inset black .75pt;mso-border-left-alt:inset black .75pt;
+  mso-border-alt:inset black .75pt;padding:1.5pt 1.5pt 1.5pt 1.5pt" width="51%">
+                                <p class="MsoNormal" style="text-align: justify;"><span style="font-family:宋体;mso-ascii-font-family:Calibri;
+  mso-ascii-theme-font:minor-latin;mso-fareast-font-family:宋体;mso-fareast-theme-font:
+  minor-fareast;mso-hansi-font-family:Calibri;mso-hansi-theme-font:minor-latin">简易房</span><span lang="EN-US"><o:p></o:p></span></p>
+                            </td>
+                            <td nowrap="nowrap" style="width:24.0%;border-top:none;border-left:none;
+  border-bottom:inset black 1.0pt;border-right:inset black 1.0pt;mso-border-top-alt:
+  inset black .75pt;mso-border-left-alt:inset black .75pt;mso-border-alt:inset black .75pt;
+  padding:1.5pt 1.5pt 1.5pt 1.5pt" width="24%">
+                                <p class="MsoNormal" style="text-align: justify;"><span style="font-family:宋体;mso-ascii-font-family:Calibri;
+  mso-ascii-theme-font:minor-latin;mso-fareast-font-family:宋体;mso-fareast-theme-font:
+  minor-fareast;mso-hansi-font-family:Calibri;mso-hansi-theme-font:minor-latin">不低于</span><span lang="EN-US">8<o:p></o:p></span></p>
+                            </td>
+                        </tr>
+                        <tr style="mso-yfti-irow:6">
+                            <td colspan="2" nowrap="nowrap" style="width:51.0%;border-top:none;
+  border-left:none;border-bottom:inset black 1.0pt;border-right:inset black 1.0pt;
+  mso-border-top-alt:inset black .75pt;mso-border-left-alt:inset black .75pt;
+  mso-border-alt:inset black .75pt;padding:1.5pt 1.5pt 1.5pt 1.5pt" width="51%">
+                                <p class="MsoNormal" style="text-align: justify;"><span style="font-family:宋体;mso-ascii-font-family:Calibri;
+  mso-ascii-theme-font:minor-latin;mso-fareast-font-family:宋体;mso-fareast-theme-font:
+  minor-fareast;mso-hansi-font-family:Calibri;mso-hansi-theme-font:minor-latin">房屋附属设施</span><span lang="EN-US"><o:p></o:p></span></p>
+                            </td>
+                            <td nowrap="nowrap" style="width:24.0%;border-top:none;border-left:none;
+  border-bottom:inset black 1.0pt;border-right:inset black 1.0pt;mso-border-top-alt:
+  inset black .75pt;mso-border-left-alt:inset black .75pt;mso-border-alt:inset black .75pt;
+  padding:1.5pt 1.5pt 1.5pt 1.5pt" width="24%">
+                                <p class="MsoNormal" style="text-align: justify;"><span style="font-family:宋体;mso-ascii-font-family:Calibri;
+  mso-ascii-theme-font:minor-latin;mso-fareast-font-family:宋体;mso-fareast-theme-font:
+  minor-fareast;mso-hansi-font-family:Calibri;mso-hansi-theme-font:minor-latin">不低于</span><span lang="EN-US">8<o:p></o:p></span></p>
+                            </td>
+                        </tr>
+                        <tr style="mso-yfti-irow:7">
+                            <td colspan="2" nowrap="nowrap" style="width:51.0%;border-top:none;
+  border-left:none;border-bottom:inset black 1.0pt;border-right:inset black 1.0pt;
+  mso-border-top-alt:inset black .75pt;mso-border-left-alt:inset black .75pt;
+  mso-border-alt:inset black .75pt;padding:1.5pt 1.5pt 1.5pt 1.5pt" width="51%">
+                                <p class="MsoNormal" style="text-align: justify;"><span style="font-family:宋体;mso-ascii-font-family:Calibri;
+  mso-ascii-theme-font:minor-latin;mso-fareast-font-family:宋体;mso-fareast-theme-font:
+  minor-fareast;mso-hansi-font-family:Calibri;mso-hansi-theme-font:minor-latin">构筑物</span><span lang="EN-US"><o:p></o:p></span></p>
+                            </td>
+                            <td nowrap="nowrap" style="width:24.0%;border-top:none;border-left:none;
+  border-bottom:inset black 1.0pt;border-right:inset black 1.0pt;mso-border-top-alt:
+  inset black .75pt;mso-border-left-alt:inset black .75pt;mso-border-alt:inset black .75pt;
+  padding:1.5pt 1.5pt 1.5pt 1.5pt" width="24%">
+                                <p class="MsoNormal" style="text-align: justify;"><span style="font-family:宋体;mso-ascii-font-family:Calibri;
+  mso-ascii-theme-font:minor-latin;mso-fareast-font-family:宋体;mso-fareast-theme-font:
+  minor-fareast;mso-hansi-font-family:Calibri;mso-hansi-theme-font:minor-latin">不低于</span><span lang="EN-US">8<o:p></o:p></span></p>
+                            </td>
+                        </tr>
+                        <tr style="mso-yfti-irow:8">
+                            <td nowrap="nowrap" rowspan="12" style="width:24.0%;border:inset black 1.0pt;
+  border-top:none;mso-border-top-alt:inset black .75pt;mso-border-alt:inset black .75pt;
+  padding:1.5pt 1.5pt 1.5pt 1.5pt" width="24%">
+                                <p class="MsoNormal" style="text-align: justify;"><span style="font-family:宋体;mso-ascii-font-family:Calibri;
+  mso-ascii-theme-font:minor-latin;mso-fareast-font-family:宋体;mso-fareast-theme-font:
+  minor-fareast;mso-hansi-font-family:Calibri;mso-hansi-theme-font:minor-latin">通用设备</span><span lang="EN-US"><o:p></o:p></span></p>
+                            </td>
+                            <td colspan="2" nowrap="nowrap" style="width:51.0%;border-top:none;
+  border-left:none;border-bottom:inset black 1.0pt;border-right:inset black 1.0pt;
+  mso-border-top-alt:inset black .75pt;mso-border-left-alt:inset black .75pt;
+  mso-border-alt:inset black .75pt;padding:1.5pt 1.5pt 1.5pt 1.5pt" width="51%">
+                                <p class="MsoNormal" style="text-align: justify;"><span style="font-family:宋体;mso-ascii-font-family:Calibri;
+  mso-ascii-theme-font:minor-latin;mso-fareast-font-family:宋体;mso-fareast-theme-font:
+  minor-fareast;mso-hansi-font-family:Calibri;mso-hansi-theme-font:minor-latin">计算机设备</span><span lang="EN-US"><o:p></o:p></span></p>
+                            </td>
+                            <td nowrap="nowrap" style="width:24.0%;border-top:none;border-left:none;
+  border-bottom:inset black 1.0pt;border-right:inset black 1.0pt;mso-border-top-alt:
+  inset black .75pt;mso-border-left-alt:inset black .75pt;mso-border-alt:inset black .75pt;
+  padding:1.5pt 1.5pt 1.5pt 1.5pt" width="24%">
+                                <p class="MsoNormal" style="text-align: justify;"><span style="font-family:宋体;mso-ascii-font-family:Calibri;
+  mso-ascii-theme-font:minor-latin;mso-fareast-font-family:宋体;mso-fareast-theme-font:
+  minor-fareast;mso-hansi-font-family:Calibri;mso-hansi-theme-font:minor-latin">不低于</span><span lang="EN-US">6<o:p></o:p></span></p>
+                            </td>
+                        </tr>
+                        <tr style="mso-yfti-irow:9">
+                            <td colspan="2" nowrap="nowrap" style="width:51.0%;border-top:none;
+  border-left:none;border-bottom:inset black 1.0pt;border-right:inset black 1.0pt;
+  mso-border-top-alt:inset black .75pt;mso-border-left-alt:inset black .75pt;
+  mso-border-alt:inset black .75pt;padding:1.5pt 1.5pt 1.5pt 1.5pt" width="51%">
+                                <p class="MsoNormal" style="text-align: justify;"><span style="font-family:宋体;mso-ascii-font-family:Calibri;
+  mso-ascii-theme-font:minor-latin;mso-fareast-font-family:宋体;mso-fareast-theme-font:
+  minor-fareast;mso-hansi-font-family:Calibri;mso-hansi-theme-font:minor-latin">办公设备</span><span lang="EN-US"><o:p></o:p></span></p>
+                            </td>
+                            <td nowrap="nowrap" style="width:24.0%;border-top:none;border-left:none;
+  border-bottom:inset black 1.0pt;border-right:inset black 1.0pt;mso-border-top-alt:
+  inset black .75pt;mso-border-left-alt:inset black .75pt;mso-border-alt:inset black .75pt;
+  padding:1.5pt 1.5pt 1.5pt 1.5pt" width="24%">
+                                <p class="MsoNormal" style="text-align: justify;"><span style="font-family:宋体;mso-ascii-font-family:Calibri;
+  mso-ascii-theme-font:minor-latin;mso-fareast-font-family:宋体;mso-fareast-theme-font:
+  minor-fareast;mso-hansi-font-family:Calibri;mso-hansi-theme-font:minor-latin">不低于</span><span lang="EN-US">6<o:p></o:p></span></p>
+                            </td>
+                        </tr>
+                        <tr style="mso-yfti-irow:10">
+                            <td colspan="2" nowrap="nowrap" style="width:51.0%;border-top:none;
+  border-left:none;border-bottom:inset black 1.0pt;border-right:inset black 1.0pt;
+  mso-border-top-alt:inset black .75pt;mso-border-left-alt:inset black .75pt;
+  mso-border-alt:inset black .75pt;padding:1.5pt 1.5pt 1.5pt 1.5pt" width="51%">
+                                <p class="MsoNormal" style="text-align: justify;"><span style="font-family:宋体;mso-ascii-font-family:Calibri;
+  mso-ascii-theme-font:minor-latin;mso-fareast-font-family:宋体;mso-fareast-theme-font:
+  minor-fareast;mso-hansi-font-family:Calibri;mso-hansi-theme-font:minor-latin">车辆</span><span lang="EN-US"><o:p></o:p></span></p>
+                            </td>
+                            <td nowrap="nowrap" style="width:24.0%;border-top:none;border-left:none;
+  border-bottom:inset black 1.0pt;border-right:inset black 1.0pt;mso-border-top-alt:
+  inset black .75pt;mso-border-left-alt:inset black .75pt;mso-border-alt:inset black .75pt;
+  padding:1.5pt 1.5pt 1.5pt 1.5pt" width="24%">
+                                <p class="MsoNormal" style="text-align: justify;"><span style="font-family:宋体;mso-ascii-font-family:Calibri;
+  mso-ascii-theme-font:minor-latin;mso-fareast-font-family:宋体;mso-fareast-theme-font:
+  minor-fareast;mso-hansi-font-family:Calibri;mso-hansi-theme-font:minor-latin">不低于</span><span lang="EN-US">8<o:p></o:p></span></p>
+                            </td>
+                        </tr>
+                        <tr style="mso-yfti-irow:11">
+                            <td colspan="2" nowrap="nowrap" style="width:51.0%;border-top:none;
+  border-left:none;border-bottom:inset black 1.0pt;border-right:inset black 1.0pt;
+  mso-border-top-alt:inset black .75pt;mso-border-left-alt:inset black .75pt;
+  mso-border-alt:inset black .75pt;padding:1.5pt 1.5pt 1.5pt 1.5pt" width="51%">
+                                <p class="MsoNormal" style="text-align: justify;"><span style="font-family:宋体;mso-ascii-font-family:Calibri;
+  mso-ascii-theme-font:minor-latin;mso-fareast-font-family:宋体;mso-fareast-theme-font:
+  minor-fareast;mso-hansi-font-family:Calibri;mso-hansi-theme-font:minor-latin">图书档案设备</span><span lang="EN-US"><o:p></o:p></span></p>
+                            </td>
+                            <td nowrap="nowrap" style="width:24.0%;border-top:none;border-left:none;
+  border-bottom:inset black 1.0pt;border-right:inset black 1.0pt;mso-border-top-alt:
+  inset black .75pt;mso-border-left-alt:inset black .75pt;mso-border-alt:inset black .75pt;
+  padding:1.5pt 1.5pt 1.5pt 1.5pt" width="24%">
+                                <p class="MsoNormal" style="text-align: justify;"><span style="font-family:宋体;mso-ascii-font-family:Calibri;
+  mso-ascii-theme-font:minor-latin;mso-fareast-font-family:宋体;mso-fareast-theme-font:
+  minor-fareast;mso-hansi-font-family:Calibri;mso-hansi-theme-font:minor-latin">不低于</span><span lang="EN-US">5<o:p></o:p></span></p>
+                            </td>
+                        </tr>
+                        <tr style="mso-yfti-irow:12">
+                            <td colspan="2" nowrap="nowrap" style="width:51.0%;border-top:none;
+  border-left:none;border-bottom:inset black 1.0pt;border-right:inset black 1.0pt;
+  mso-border-top-alt:inset black .75pt;mso-border-left-alt:inset black .75pt;
+  mso-border-alt:inset black .75pt;padding:1.5pt 1.5pt 1.5pt 1.5pt" width="51%">
+                                <p class="MsoNormal" style="text-align: justify;"><span style="font-family:宋体;mso-ascii-font-family:Calibri;
+  mso-ascii-theme-font:minor-latin;mso-fareast-font-family:宋体;mso-fareast-theme-font:
+  minor-fareast;mso-hansi-font-family:Calibri;mso-hansi-theme-font:minor-latin">机械设备</span><span lang="EN-US"><o:p></o:p></span></p>
+                            </td>
+                            <td nowrap="nowrap" style="width:24.0%;border-top:none;border-left:none;
+  border-bottom:inset black 1.0pt;border-right:inset black 1.0pt;mso-border-top-alt:
+  inset black .75pt;mso-border-left-alt:inset black .75pt;mso-border-alt:inset black .75pt;
+  padding:1.5pt 1.5pt 1.5pt 1.5pt" width="24%">
+                                <p class="MsoNormal" style="text-align: justify;"><span style="font-family:宋体;mso-ascii-font-family:Calibri;
+  mso-ascii-theme-font:minor-latin;mso-fareast-font-family:宋体;mso-fareast-theme-font:
+  minor-fareast;mso-hansi-font-family:Calibri;mso-hansi-theme-font:minor-latin">不低于</span><span lang="EN-US">10<o:p></o:p></span></p>
+                            </td>
+                        </tr>
+                        <tr style="mso-yfti-irow:13">
+                            <td colspan="2" nowrap="nowrap" style="width:51.0%;border-top:none;
+  border-left:none;border-bottom:inset black 1.0pt;border-right:inset black 1.0pt;
+  mso-border-top-alt:inset black .75pt;mso-border-left-alt:inset black .75pt;
+  mso-border-alt:inset black .75pt;padding:1.5pt 1.5pt 1.5pt 1.5pt" width="51%">
+                                <p class="MsoNormal" style="text-align: justify;"><span style="font-family:宋体;mso-ascii-font-family:Calibri;
+  mso-ascii-theme-font:minor-latin;mso-fareast-font-family:宋体;mso-fareast-theme-font:
+  minor-fareast;mso-hansi-font-family:Calibri;mso-hansi-theme-font:minor-latin">电气设备</span><span lang="EN-US"><o:p></o:p></span></p>
+                            </td>
+                            <td nowrap="nowrap" style="width:24.0%;border-top:none;border-left:none;
+  border-bottom:inset black 1.0pt;border-right:inset black 1.0pt;mso-border-top-alt:
+  inset black .75pt;mso-border-left-alt:inset black .75pt;mso-border-alt:inset black .75pt;
+  padding:1.5pt 1.5pt 1.5pt 1.5pt" width="24%">
+                                <p class="MsoNormal" style="text-align: justify;"><span style="font-family:宋体;mso-ascii-font-family:Calibri;
+  mso-ascii-theme-font:minor-latin;mso-fareast-font-family:宋体;mso-fareast-theme-font:
+  minor-fareast;mso-hansi-font-family:Calibri;mso-hansi-theme-font:minor-latin">不低于</span><span lang="EN-US">5<o:p></o:p></span></p>
+                            </td>
+                        </tr>
+                        <tr style="mso-yfti-irow:14">
+                            <td colspan="2" nowrap="nowrap" style="width:51.0%;border-top:none;
+  border-left:none;border-bottom:inset black 1.0pt;border-right:inset black 1.0pt;
+  mso-border-top-alt:inset black .75pt;mso-border-left-alt:inset black .75pt;
+  mso-border-alt:inset black .75pt;padding:1.5pt 1.5pt 1.5pt 1.5pt" width="51%">
+                                <p class="MsoNormal" style="text-align: justify;"><span style="font-family:宋体;mso-ascii-font-family:Calibri;
+  mso-ascii-theme-font:minor-latin;mso-fareast-font-family:宋体;mso-fareast-theme-font:
+  minor-fareast;mso-hansi-font-family:Calibri;mso-hansi-theme-font:minor-latin">雷达、无线电和卫星导航设备</span><span lang="EN-US"><o:p></o:p></span></p>
+                            </td>
+                            <td nowrap="nowrap" style="width:24.0%;border-top:none;border-left:none;
+  border-bottom:inset black 1.0pt;border-right:inset black 1.0pt;mso-border-top-alt:
+  inset black .75pt;mso-border-left-alt:inset black .75pt;mso-border-alt:inset black .75pt;
+  padding:1.5pt 1.5pt 1.5pt 1.5pt" width="24%">
+                                <p class="MsoNormal" style="text-align: justify;"><span style="font-family:宋体;mso-ascii-font-family:Calibri;
+  mso-ascii-theme-font:minor-latin;mso-fareast-font-family:宋体;mso-fareast-theme-font:
+  minor-fareast;mso-hansi-font-family:Calibri;mso-hansi-theme-font:minor-latin">不低于</span><span lang="EN-US">10<o:p></o:p></span></p>
+                            </td>
+                        </tr>
+                        <tr style="mso-yfti-irow:15">
+                            <td colspan="2" nowrap="nowrap" style="width:51.0%;border-top:none;
+  border-left:none;border-bottom:inset black 1.0pt;border-right:inset black 1.0pt;
+  mso-border-top-alt:inset black .75pt;mso-border-left-alt:inset black .75pt;
+  mso-border-alt:inset black .75pt;padding:1.5pt 1.5pt 1.5pt 1.5pt" width="51%">
+                                <p class="MsoNormal" style="text-align: justify;"><span style="font-family:宋体;mso-ascii-font-family:Calibri;
+  mso-ascii-theme-font:minor-latin;mso-fareast-font-family:宋体;mso-fareast-theme-font:
+  minor-fareast;mso-hansi-font-family:Calibri;mso-hansi-theme-font:minor-latin">通信设备</span><span lang="EN-US"><o:p></o:p></span></p>
+                            </td>
+                            <td nowrap="nowrap" style="width:24.0%;border-top:none;border-left:none;
+  border-bottom:inset black 1.0pt;border-right:inset black 1.0pt;mso-border-top-alt:
+  inset black .75pt;mso-border-left-alt:inset black .75pt;mso-border-alt:inset black .75pt;
+  padding:1.5pt 1.5pt 1.5pt 1.5pt" width="24%">
+                                <p class="MsoNormal" style="text-align: justify;"><span style="font-family:宋体;mso-ascii-font-family:Calibri;
+  mso-ascii-theme-font:minor-latin;mso-fareast-font-family:宋体;mso-fareast-theme-font:
+  minor-fareast;mso-hansi-font-family:Calibri;mso-hansi-theme-font:minor-latin">不低于</span><span lang="EN-US">5<o:p></o:p></span></p>
+                            </td>
+                        </tr>
+                        <tr style="mso-yfti-irow:16">
+                            <td colspan="2" nowrap="nowrap" style="width:51.0%;border-top:none;
+  border-left:none;border-bottom:inset black 1.0pt;border-right:inset black 1.0pt;
+  mso-border-top-alt:inset black .75pt;mso-border-left-alt:inset black .75pt;
+  mso-border-alt:inset black .75pt;padding:1.5pt 1.5pt 1.5pt 1.5pt" width="51%">
+                                <p class="MsoNormal" style="text-align: justify;"><span style="font-family:宋体;mso-ascii-font-family:Calibri;
+  mso-ascii-theme-font:minor-latin;mso-fareast-font-family:宋体;mso-fareast-theme-font:
+  minor-fareast;mso-hansi-font-family:Calibri;mso-hansi-theme-font:minor-latin">广播、电视、电影设备</span><span lang="EN-US"><o:p></o:p></span></p>
+                            </td>
+                            <td nowrap="nowrap" style="width:24.0%;border-top:none;border-left:none;
+  border-bottom:inset black 1.0pt;border-right:inset black 1.0pt;mso-border-top-alt:
+  inset black .75pt;mso-border-left-alt:inset black .75pt;mso-border-alt:inset black .75pt;
+  padding:1.5pt 1.5pt 1.5pt 1.5pt" width="24%">
+                                <p class="MsoNormal" style="text-align: justify;"><span style="font-family:宋体;mso-ascii-font-family:Calibri;
+  mso-ascii-theme-font:minor-latin;mso-fareast-font-family:宋体;mso-fareast-theme-font:
+  minor-fareast;mso-hansi-font-family:Calibri;mso-hansi-theme-font:minor-latin">不低于</span><span lang="EN-US">5<o:p></o:p></span></p>
+                            </td>
+                        </tr>
+                        <tr style="mso-yfti-irow:17">
+                            <td colspan="2" nowrap="nowrap" style="width:51.0%;border-top:none;
+  border-left:none;border-bottom:inset black 1.0pt;border-right:inset black 1.0pt;
+  mso-border-top-alt:inset black .75pt;mso-border-left-alt:inset black .75pt;
+  mso-border-alt:inset black .75pt;padding:1.5pt 1.5pt 1.5pt 1.5pt" width="51%">
+                                <p class="MsoNormal" style="text-align: justify;"><span style="font-family:宋体;mso-ascii-font-family:Calibri;
+  mso-ascii-theme-font:minor-latin;mso-fareast-font-family:宋体;mso-fareast-theme-font:
+  minor-fareast;mso-hansi-font-family:Calibri;mso-hansi-theme-font:minor-latin">仪器仪表</span><span lang="EN-US"><o:p></o:p></span></p>
+                            </td>
+                            <td nowrap="nowrap" style="width:24.0%;border-top:none;border-left:none;
+  border-bottom:inset black 1.0pt;border-right:inset black 1.0pt;mso-border-top-alt:
+  inset black .75pt;mso-border-left-alt:inset black .75pt;mso-border-alt:inset black .75pt;
+  padding:1.5pt 1.5pt 1.5pt 1.5pt" width="24%">
+                                <p class="MsoNormal" style="text-align: justify;"><span style="font-family:宋体;mso-ascii-font-family:Calibri;
+  mso-ascii-theme-font:minor-latin;mso-fareast-font-family:宋体;mso-fareast-theme-font:
+  minor-fareast;mso-hansi-font-family:Calibri;mso-hansi-theme-font:minor-latin">不低于</span><span lang="EN-US">5<o:p></o:p></span></p>
+                            </td>
+                        </tr>
+                        <tr style="mso-yfti-irow:18">
+                            <td colspan="2" nowrap="nowrap" style="width:51.0%;border-top:none;
+  border-left:none;border-bottom:inset black 1.0pt;border-right:inset black 1.0pt;
+  mso-border-top-alt:inset black .75pt;mso-border-left-alt:inset black .75pt;
+  mso-border-alt:inset black .75pt;padding:1.5pt 1.5pt 1.5pt 1.5pt" width="51%">
+                                <p class="MsoNormal" style="text-align: justify;"><span style="font-family:宋体;mso-ascii-font-family:Calibri;
+  mso-ascii-theme-font:minor-latin;mso-fareast-font-family:宋体;mso-fareast-theme-font:
+  minor-fareast;mso-hansi-font-family:Calibri;mso-hansi-theme-font:minor-latin">电子和通信测量设备</span><span lang="EN-US"><o:p></o:p></span></p>
+                            </td>
+                            <td nowrap="nowrap" style="width:24.0%;border-top:none;border-left:none;
+  border-bottom:inset black 1.0pt;border-right:inset black 1.0pt;mso-border-top-alt:
+  inset black .75pt;mso-border-left-alt:inset black .75pt;mso-border-alt:inset black .75pt;
+  padding:1.5pt 1.5pt 1.5pt 1.5pt" width="24%">
+                                <p class="MsoNormal" style="text-align: justify;"><span style="font-family:宋体;mso-ascii-font-family:Calibri;
+  mso-ascii-theme-font:minor-latin;mso-fareast-font-family:宋体;mso-fareast-theme-font:
+  minor-fareast;mso-hansi-font-family:Calibri;mso-hansi-theme-font:minor-latin">不低于</span><span lang="EN-US">5<o:p></o:p></span></p>
+                            </td>
+                        </tr>
+                        <tr style="mso-yfti-irow:19">
+                            <td colspan="2" nowrap="nowrap" style="width:51.0%;border-top:none;
+  border-left:none;border-bottom:inset black 1.0pt;border-right:inset black 1.0pt;
+  mso-border-top-alt:inset black .75pt;mso-border-left-alt:inset black .75pt;
+  mso-border-alt:inset black .75pt;padding:1.5pt 1.5pt 1.5pt 1.5pt" width="51%">
+                                <p class="MsoNormal" style="text-align: justify;"><span style="font-family:宋体;mso-ascii-font-family:Calibri;
+  mso-ascii-theme-font:minor-latin;mso-fareast-font-family:宋体;mso-fareast-theme-font:
+  minor-fareast;mso-hansi-font-family:Calibri;mso-hansi-theme-font:minor-latin">计量标准器具及量具、衡器</span><span lang="EN-US"><o:p></o:p></span></p>
+                            </td>
+                            <td nowrap="nowrap" style="width:24.0%;border-top:none;border-left:none;
+  border-bottom:inset black 1.0pt;border-right:inset black 1.0pt;mso-border-top-alt:
+  inset black .75pt;mso-border-left-alt:inset black .75pt;mso-border-alt:inset black .75pt;
+  padding:1.5pt 1.5pt 1.5pt 1.5pt" width="24%">
+                                <p class="MsoNormal" style="text-align: justify;"><span style="font-family:宋体;mso-ascii-font-family:Calibri;
+  mso-ascii-theme-font:minor-latin;mso-fareast-font-family:宋体;mso-fareast-theme-font:
+  minor-fareast;mso-hansi-font-family:Calibri;mso-hansi-theme-font:minor-latin">不低于</span><span lang="EN-US">5<o:p></o:p></span></p>
+                            </td>
+                        </tr>
+                        <tr style="mso-yfti-irow:20">
+                            <td nowrap="nowrap" rowspan="34" style="width:24.0%;border:inset black 1.0pt;
+  border-top:none;mso-border-top-alt:inset black .75pt;mso-border-alt:inset black .75pt;
+  padding:1.5pt 1.5pt 1.5pt 1.5pt" width="24%">
+                                <p class="MsoNormal" style="text-align: justify;"><span style="font-family:宋体;mso-ascii-font-family:Calibri;
+  mso-ascii-theme-font:minor-latin;mso-fareast-font-family:宋体;mso-fareast-theme-font:
+  minor-fareast;mso-hansi-font-family:Calibri;mso-hansi-theme-font:minor-latin">专用设备</span><span lang="EN-US"><o:p></o:p></span></p>
+                            </td>
+                            <td colspan="2" nowrap="nowrap" style="width:51.0%;border-top:none;
+  border-left:none;border-bottom:inset black 1.0pt;border-right:inset black 1.0pt;
+  mso-border-top-alt:inset black .75pt;mso-border-left-alt:inset black .75pt;
+  mso-border-alt:inset black .75pt;padding:1.5pt 1.5pt 1.5pt 1.5pt" width="51%">
+                                <p class="MsoNormal" style="text-align: justify;"><span style="font-family:宋体;mso-ascii-font-family:Calibri;
+  mso-ascii-theme-font:minor-latin;mso-fareast-font-family:宋体;mso-fareast-theme-font:
+  minor-fareast;mso-hansi-font-family:Calibri;mso-hansi-theme-font:minor-latin">探矿、采矿、选矿和造块设备</span><span lang="EN-US"><o:p></o:p></span></p>
+                            </td>
+                            <td nowrap="nowrap" style="width:24.0%;border-top:none;border-left:none;
+  border-bottom:inset black 1.0pt;border-right:inset black 1.0pt;mso-border-top-alt:
+  inset black .75pt;mso-border-left-alt:inset black .75pt;mso-border-alt:inset black .75pt;
+  padding:1.5pt 1.5pt 1.5pt 1.5pt" width="24%">
+                                <p class="MsoNormal" style="text-align: justify;"><span lang="EN-US">10-15<o:p></o:p></span></p>
+                            </td>
+                        </tr>
+                        <tr style="mso-yfti-irow:21">
+                            <td colspan="2" nowrap="nowrap" style="width:51.0%;border-top:none;
+  border-left:none;border-bottom:inset black 1.0pt;border-right:inset black 1.0pt;
+  mso-border-top-alt:inset black .75pt;mso-border-left-alt:inset black .75pt;
+  mso-border-alt:inset black .75pt;padding:1.5pt 1.5pt 1.5pt 1.5pt" width="51%">
+                                <p class="MsoNormal" style="text-align: justify;"><span style="font-family:宋体;mso-ascii-font-family:Calibri;
+  mso-ascii-theme-font:minor-latin;mso-fareast-font-family:宋体;mso-fareast-theme-font:
+  minor-fareast;mso-hansi-font-family:Calibri;mso-hansi-theme-font:minor-latin">石油天然气开采专用设备</span><span lang="EN-US"><o:p></o:p></span></p>
+                            </td>
+                            <td nowrap="nowrap" style="width:24.0%;border-top:none;border-left:none;
+  border-bottom:inset black 1.0pt;border-right:inset black 1.0pt;mso-border-top-alt:
+  inset black .75pt;mso-border-left-alt:inset black .75pt;mso-border-alt:inset black .75pt;
+  padding:1.5pt 1.5pt 1.5pt 1.5pt" width="24%">
+                                <p class="MsoNormal" style="text-align: justify;"><span lang="EN-US">10-15<o:p></o:p></span></p>
+                            </td>
+                        </tr>
+                        <tr style="mso-yfti-irow:22">
+                            <td colspan="2" nowrap="nowrap" style="width:51.0%;border-top:none;
+  border-left:none;border-bottom:inset black 1.0pt;border-right:inset black 1.0pt;
+  mso-border-top-alt:inset black .75pt;mso-border-left-alt:inset black .75pt;
+  mso-border-alt:inset black .75pt;padding:1.5pt 1.5pt 1.5pt 1.5pt" width="51%">
+                                <p class="MsoNormal" style="text-align: justify;"><span style="font-family:宋体;mso-ascii-font-family:Calibri;
+  mso-ascii-theme-font:minor-latin;mso-fareast-font-family:宋体;mso-fareast-theme-font:
+  minor-fareast;mso-hansi-font-family:Calibri;mso-hansi-theme-font:minor-latin">石油和化学工业专用设备</span><span lang="EN-US"><o:p></o:p></span></p>
+                            </td>
+                            <td nowrap="nowrap" style="width:24.0%;border-top:none;border-left:none;
+  border-bottom:inset black 1.0pt;border-right:inset black 1.0pt;mso-border-top-alt:
+  inset black .75pt;mso-border-left-alt:inset black .75pt;mso-border-alt:inset black .75pt;
+  padding:1.5pt 1.5pt 1.5pt 1.5pt" width="24%">
+                                <p class="MsoNormal" style="text-align: justify;"><span lang="EN-US">10-15<o:p></o:p></span></p>
+                            </td>
+                        </tr>
+                        <tr style="mso-yfti-irow:23">
+                            <td colspan="2" nowrap="nowrap" style="width:51.0%;border-top:none;
+  border-left:none;border-bottom:inset black 1.0pt;border-right:inset black 1.0pt;
+  mso-border-top-alt:inset black .75pt;mso-border-left-alt:inset black .75pt;
+  mso-border-alt:inset black .75pt;padding:1.5pt 1.5pt 1.5pt 1.5pt" width="51%">
+                                <p class="MsoNormal" style="text-align: justify;"><span style="font-family:宋体;mso-ascii-font-family:Calibri;
+  mso-ascii-theme-font:minor-latin;mso-fareast-font-family:宋体;mso-fareast-theme-font:
+  minor-fareast;mso-hansi-font-family:Calibri;mso-hansi-theme-font:minor-latin">炼焦和金属冶炼轧制设备</span><span lang="EN-US"><o:p></o:p></span></p>
+                            </td>
+                            <td nowrap="nowrap" style="width:24.0%;border-top:none;border-left:none;
+  border-bottom:inset black 1.0pt;border-right:inset black 1.0pt;mso-border-top-alt:
+  inset black .75pt;mso-border-left-alt:inset black .75pt;mso-border-alt:inset black .75pt;
+  padding:1.5pt 1.5pt 1.5pt 1.5pt" width="24%">
+                                <p class="MsoNormal" style="text-align: justify;"><span lang="EN-US">10-15<o:p></o:p></span></p>
+                            </td>
+                        </tr>
+                        <tr style="mso-yfti-irow:24">
+                            <td colspan="2" nowrap="nowrap" style="width:51.0%;border-top:none;
+  border-left:none;border-bottom:inset black 1.0pt;border-right:inset black 1.0pt;
+  mso-border-top-alt:inset black .75pt;mso-border-left-alt:inset black .75pt;
+  mso-border-alt:inset black .75pt;padding:1.5pt 1.5pt 1.5pt 1.5pt" width="51%">
+                                <p class="MsoNormal" style="text-align: justify;"><span style="font-family:宋体;mso-ascii-font-family:Calibri;
+  mso-ascii-theme-font:minor-latin;mso-fareast-font-family:宋体;mso-fareast-theme-font:
+  minor-fareast;mso-hansi-font-family:Calibri;mso-hansi-theme-font:minor-latin">电力工业专用设备</span><span lang="EN-US"><o:p></o:p></span></p>
+                            </td>
+                            <td nowrap="nowrap" style="width:24.0%;border-top:none;border-left:none;
+  border-bottom:inset black 1.0pt;border-right:inset black 1.0pt;mso-border-top-alt:
+  inset black .75pt;mso-border-left-alt:inset black .75pt;mso-border-alt:inset black .75pt;
+  padding:1.5pt 1.5pt 1.5pt 1.5pt" width="24%">
+                                <p class="MsoNormal" style="text-align: justify;"><span lang="EN-US">20-30<o:p></o:p></span></p>
+                            </td>
+                        </tr>
+                        <tr style="mso-yfti-irow:25">
+                            <td colspan="2" nowrap="nowrap" style="width:51.0%;border-top:none;
+  border-left:none;border-bottom:inset black 1.0pt;border-right:inset black 1.0pt;
+  mso-border-top-alt:inset black .75pt;mso-border-left-alt:inset black .75pt;
+  mso-border-alt:inset black .75pt;padding:1.5pt 1.5pt 1.5pt 1.5pt" width="51%">
+                                <p class="MsoNormal" style="text-align: justify;"><span style="font-family:宋体;mso-ascii-font-family:Calibri;
+  mso-ascii-theme-font:minor-latin;mso-fareast-font-family:宋体;mso-fareast-theme-font:
+  minor-fareast;mso-hansi-font-family:Calibri;mso-hansi-theme-font:minor-latin">非金属矿物制品工业专用设备</span><span lang="EN-US"><o:p></o:p></span></p>
+                            </td>
+                            <td nowrap="nowrap" style="width:24.0%;border-top:none;border-left:none;
+  border-bottom:inset black 1.0pt;border-right:inset black 1.0pt;mso-border-top-alt:
+  inset black .75pt;mso-border-left-alt:inset black .75pt;mso-border-alt:inset black .75pt;
+  padding:1.5pt 1.5pt 1.5pt 1.5pt" width="24%">
+                                <p class="MsoNormal" style="text-align: justify;"><span lang="EN-US">10-20<o:p></o:p></span></p>
+                            </td>
+                        </tr>
+                        <tr style="mso-yfti-irow:26">
+                            <td colspan="2" nowrap="nowrap" style="width:51.0%;border-top:none;
+  border-left:none;border-bottom:inset black 1.0pt;border-right:inset black 1.0pt;
+  mso-border-top-alt:inset black .75pt;mso-border-left-alt:inset black .75pt;
+  mso-border-alt:inset black .75pt;padding:1.5pt 1.5pt 1.5pt 1.5pt" width="51%">
+                                <p class="MsoNormal" style="text-align: justify;"><span style="font-family:宋体;mso-ascii-font-family:Calibri;
+  mso-ascii-theme-font:minor-latin;mso-fareast-font-family:宋体;mso-fareast-theme-font:
+  minor-fareast;mso-hansi-font-family:Calibri;mso-hansi-theme-font:minor-latin">核工业专用设备</span><span lang="EN-US"><o:p></o:p></span></p>
+                            </td>
+                            <td nowrap="nowrap" style="width:24.0%;border-top:none;border-left:none;
+  border-bottom:inset black 1.0pt;border-right:inset black 1.0pt;mso-border-top-alt:
+  inset black .75pt;mso-border-left-alt:inset black .75pt;mso-border-alt:inset black .75pt;
+  padding:1.5pt 1.5pt 1.5pt 1.5pt" width="24%">
+                                <p class="MsoNormal" style="text-align: justify;"><span lang="EN-US">20-30<o:p></o:p></span></p>
+                            </td>
+                        </tr>
+                        <tr style="mso-yfti-irow:27">
+                            <td colspan="2" nowrap="nowrap" style="width:51.0%;border-top:none;
+  border-left:none;border-bottom:inset black 1.0pt;border-right:inset black 1.0pt;
+  mso-border-top-alt:inset black .75pt;mso-border-left-alt:inset black .75pt;
+  mso-border-alt:inset black .75pt;padding:1.5pt 1.5pt 1.5pt 1.5pt" width="51%">
+                                <p class="MsoNormal" style="text-align: justify;"><span style="font-family:宋体;mso-ascii-font-family:Calibri;
+  mso-ascii-theme-font:minor-latin;mso-fareast-font-family:宋体;mso-fareast-theme-font:
+  minor-fareast;mso-hansi-font-family:Calibri;mso-hansi-theme-font:minor-latin">航空航天工业专用设备</span><span lang="EN-US"><o:p></o:p></span></p>
+                            </td>
+                            <td nowrap="nowrap" style="width:24.0%;border-top:none;border-left:none;
+  border-bottom:inset black 1.0pt;border-right:inset black 1.0pt;mso-border-top-alt:
+  inset black .75pt;mso-border-left-alt:inset black .75pt;mso-border-alt:inset black .75pt;
+  padding:1.5pt 1.5pt 1.5pt 1.5pt" width="24%">
+                                <p class="MsoNormal" style="text-align: justify;"><span lang="EN-US">20-30<o:p></o:p></span></p>
+                            </td>
+                        </tr>
+                        <tr style="mso-yfti-irow:28">
+                            <td colspan="2" nowrap="nowrap" style="width:51.0%;border-top:none;
+  border-left:none;border-bottom:inset black 1.0pt;border-right:inset black 1.0pt;
+  mso-border-top-alt:inset black .75pt;mso-border-left-alt:inset black .75pt;
+  mso-border-alt:inset black .75pt;padding:1.5pt 1.5pt 1.5pt 1.5pt" width="51%">
+                                <p class="MsoNormal" style="text-align: justify;"><span style="font-family:宋体;mso-ascii-font-family:Calibri;
+  mso-ascii-theme-font:minor-latin;mso-fareast-font-family:宋体;mso-fareast-theme-font:
+  minor-fareast;mso-hansi-font-family:Calibri;mso-hansi-theme-font:minor-latin">工程机械</span><span lang="EN-US"><o:p></o:p></span></p>
+                            </td>
+                            <td nowrap="nowrap" style="width:24.0%;border-top:none;border-left:none;
+  border-bottom:inset black 1.0pt;border-right:inset black 1.0pt;mso-border-top-alt:
+  inset black .75pt;mso-border-left-alt:inset black .75pt;mso-border-alt:inset black .75pt;
+  padding:1.5pt 1.5pt 1.5pt 1.5pt" width="24%">
+                                <p class="MsoNormal" style="text-align: justify;"><span lang="EN-US">10-15<o:p></o:p></span></p>
+                            </td>
+                        </tr>
+                        <tr style="mso-yfti-irow:29">
+                            <td colspan="2" nowrap="nowrap" style="width:51.0%;border-top:none;
+  border-left:none;border-bottom:inset black 1.0pt;border-right:inset black 1.0pt;
+  mso-border-top-alt:inset black .75pt;mso-border-left-alt:inset black .75pt;
+  mso-border-alt:inset black .75pt;padding:1.5pt 1.5pt 1.5pt 1.5pt" width="51%">
+                                <p class="MsoNormal" style="text-align: justify;"><span style="font-family:宋体;mso-ascii-font-family:Calibri;
+  mso-ascii-theme-font:minor-latin;mso-fareast-font-family:宋体;mso-fareast-theme-font:
+  minor-fareast;mso-hansi-font-family:Calibri;mso-hansi-theme-font:minor-latin">农业和林业机械</span><span lang="EN-US"><o:p></o:p></span></p>
+                            </td>
+                            <td nowrap="nowrap" style="width:24.0%;border-top:none;border-left:none;
+  border-bottom:inset black 1.0pt;border-right:inset black 1.0pt;mso-border-top-alt:
+  inset black .75pt;mso-border-left-alt:inset black .75pt;mso-border-alt:inset black .75pt;
+  padding:1.5pt 1.5pt 1.5pt 1.5pt" width="24%">
+                                <p class="MsoNormal" style="text-align: justify;"><span lang="EN-US">10-15<o:p></o:p></span></p>
+                            </td>
+                        </tr>
+                        <tr style="mso-yfti-irow:30">
+                            <td colspan="2" nowrap="nowrap" style="width:51.0%;border-top:none;
+  border-left:none;border-bottom:inset black 1.0pt;border-right:inset black 1.0pt;
+  mso-border-top-alt:inset black .75pt;mso-border-left-alt:inset black .75pt;
+  mso-border-alt:inset black .75pt;padding:1.5pt 1.5pt 1.5pt 1.5pt" width="51%">
+                                <p class="MsoNormal" style="text-align: justify;"><span style="font-family:宋体;mso-ascii-font-family:Calibri;
+  mso-ascii-theme-font:minor-latin;mso-fareast-font-family:宋体;mso-fareast-theme-font:
+  minor-fareast;mso-hansi-font-family:Calibri;mso-hansi-theme-font:minor-latin">木材采集和加工设备</span><span lang="EN-US"><o:p></o:p></span></p>
+                            </td>
+                            <td nowrap="nowrap" style="width:24.0%;border-top:none;border-left:none;
+  border-bottom:inset black 1.0pt;border-right:inset black 1.0pt;mso-border-top-alt:
+  inset black .75pt;mso-border-left-alt:inset black .75pt;mso-border-alt:inset black .75pt;
+  padding:1.5pt 1.5pt 1.5pt 1.5pt" width="24%">
+                                <p class="MsoNormal" style="text-align: justify;"><span lang="EN-US">10-15<o:p></o:p></span></p>
+                            </td>
+                        </tr>
+                        <tr style="mso-yfti-irow:31">
+                            <td colspan="2" nowrap="nowrap" style="width:51.0%;border-top:none;
+  border-left:none;border-bottom:inset black 1.0pt;border-right:inset black 1.0pt;
+  mso-border-top-alt:inset black .75pt;mso-border-left-alt:inset black .75pt;
+  mso-border-alt:inset black .75pt;padding:1.5pt 1.5pt 1.5pt 1.5pt" width="51%">
+                                <p class="MsoNormal" style="text-align: justify;"><span style="font-family:宋体;mso-ascii-font-family:Calibri;
+  mso-ascii-theme-font:minor-latin;mso-fareast-font-family:宋体;mso-fareast-theme-font:
+  minor-fareast;mso-hansi-font-family:Calibri;mso-hansi-theme-font:minor-latin">食品加工专用设备</span><span lang="EN-US"><o:p></o:p></span></p>
+                            </td>
+                            <td nowrap="nowrap" style="width:24.0%;border-top:none;border-left:none;
+  border-bottom:inset black 1.0pt;border-right:inset black 1.0pt;mso-border-top-alt:
+  inset black .75pt;mso-border-left-alt:inset black .75pt;mso-border-alt:inset black .75pt;
+  padding:1.5pt 1.5pt 1.5pt 1.5pt" width="24%">
+                                <p class="MsoNormal" style="text-align: justify;"><span lang="EN-US">10-15<o:p></o:p></span></p>
+                            </td>
+                        </tr>
+                        <tr style="mso-yfti-irow:32">
+                            <td colspan="2" nowrap="nowrap" style="width:51.0%;border-top:none;
+  border-left:none;border-bottom:inset black 1.0pt;border-right:inset black 1.0pt;
+  mso-border-top-alt:inset black .75pt;mso-border-left-alt:inset black .75pt;
+  mso-border-alt:inset black .75pt;padding:1.5pt 1.5pt 1.5pt 1.5pt" width="51%">
+                                <p class="MsoNormal" style="text-align: justify;"><span style="font-family:宋体;mso-ascii-font-family:Calibri;
+  mso-ascii-theme-font:minor-latin;mso-fareast-font-family:宋体;mso-fareast-theme-font:
+  minor-fareast;mso-hansi-font-family:Calibri;mso-hansi-theme-font:minor-latin">饮料加工设备</span><span lang="EN-US"><o:p></o:p></span></p>
+                            </td>
+                            <td nowrap="nowrap" style="width:24.0%;border-top:none;border-left:none;
+  border-bottom:inset black 1.0pt;border-right:inset black 1.0pt;mso-border-top-alt:
+  inset black .75pt;mso-border-left-alt:inset black .75pt;mso-border-alt:inset black .75pt;
+  padding:1.5pt 1.5pt 1.5pt 1.5pt" width="24%">
+                                <p class="MsoNormal" style="text-align: justify;"><span lang="EN-US">10-15<o:p></o:p></span></p>
+                            </td>
+                        </tr>
+                        <tr style="mso-yfti-irow:33">
+                            <td colspan="2" nowrap="nowrap" style="width:51.0%;border-top:none;
+  border-left:none;border-bottom:inset black 1.0pt;border-right:inset black 1.0pt;
+  mso-border-top-alt:inset black .75pt;mso-border-left-alt:inset black .75pt;
+  mso-border-alt:inset black .75pt;padding:1.5pt 1.5pt 1.5pt 1.5pt" width="51%">
+                                <p class="MsoNormal" style="text-align: justify;"><span style="font-family:宋体;mso-ascii-font-family:Calibri;
+  mso-ascii-theme-font:minor-latin;mso-fareast-font-family:宋体;mso-fareast-theme-font:
+  minor-fareast;mso-hansi-font-family:Calibri;mso-hansi-theme-font:minor-latin">烟草加工设备</span><span lang="EN-US"><o:p></o:p></span></p>
+                            </td>
+                            <td nowrap="nowrap" style="width:24.0%;border-top:none;border-left:none;
+  border-bottom:inset black 1.0pt;border-right:inset black 1.0pt;mso-border-top-alt:
+  inset black .75pt;mso-border-left-alt:inset black .75pt;mso-border-alt:inset black .75pt;
+  padding:1.5pt 1.5pt 1.5pt 1.5pt" width="24%">
+                                <p class="MsoNormal" style="text-align: justify;"><span lang="EN-US">10-15<o:p></o:p></span></p>
+                            </td>
+                        </tr>
+                        <tr style="mso-yfti-irow:34">
+                            <td colspan="2" nowrap="nowrap" style="width:51.0%;border-top:none;
+  border-left:none;border-bottom:inset black 1.0pt;border-right:inset black 1.0pt;
+  mso-border-top-alt:inset black .75pt;mso-border-left-alt:inset black .75pt;
+  mso-border-alt:inset black .75pt;padding:1.5pt 1.5pt 1.5pt 1.5pt" width="51%">
+                                <p class="MsoNormal" style="text-align: justify;"><span style="font-family:宋体;mso-ascii-font-family:Calibri;
+  mso-ascii-theme-font:minor-latin;mso-fareast-font-family:宋体;mso-fareast-theme-font:
+  minor-fareast;mso-hansi-font-family:Calibri;mso-hansi-theme-font:minor-latin">粮油作物和饲料加工设备</span><span lang="EN-US"><o:p></o:p></span></p>
+                            </td>
+                            <td nowrap="nowrap" style="width:24.0%;border-top:none;border-left:none;
+  border-bottom:inset black 1.0pt;border-right:inset black 1.0pt;mso-border-top-alt:
+  inset black .75pt;mso-border-left-alt:inset black .75pt;mso-border-alt:inset black .75pt;
+  padding:1.5pt 1.5pt 1.5pt 1.5pt" width="24%">
+                                <p class="MsoNormal" style="text-align: justify;"><span lang="EN-US">10-15<o:p></o:p></span></p>
+                            </td>
+                        </tr>
+                        <tr style="mso-yfti-irow:35">
+                            <td colspan="2" nowrap="nowrap" style="width:51.0%;border-top:none;
+  border-left:none;border-bottom:inset black 1.0pt;border-right:inset black 1.0pt;
+  mso-border-top-alt:inset black .75pt;mso-border-left-alt:inset black .75pt;
+  mso-border-alt:inset black .75pt;padding:1.5pt 1.5pt 1.5pt 1.5pt" width="51%">
+                                <p class="MsoNormal" style="text-align: justify;"><span style="font-family:宋体;mso-ascii-font-family:Calibri;
+  mso-ascii-theme-font:minor-latin;mso-fareast-font-family:宋体;mso-fareast-theme-font:
+  minor-fareast;mso-hansi-font-family:Calibri;mso-hansi-theme-font:minor-latin">纺织设备</span><span lang="EN-US"><o:p></o:p></span></p>
+                            </td>
+                            <td nowrap="nowrap" style="width:24.0%;border-top:none;border-left:none;
+  border-bottom:inset black 1.0pt;border-right:inset black 1.0pt;mso-border-top-alt:
+  inset black .75pt;mso-border-left-alt:inset black .75pt;mso-border-alt:inset black .75pt;
+  padding:1.5pt 1.5pt 1.5pt 1.5pt" width="24%">
+                                <p class="MsoNormal" style="text-align: justify;"><span lang="EN-US">10-15<o:p></o:p></span></p>
+                            </td>
+                        </tr>
+                        <tr style="mso-yfti-irow:36">
+                            <td colspan="2" nowrap="nowrap" style="width:51.0%;border-top:none;
+  border-left:none;border-bottom:inset black 1.0pt;border-right:inset black 1.0pt;
+  mso-border-top-alt:inset black .75pt;mso-border-left-alt:inset black .75pt;
+  mso-border-alt:inset black .75pt;padding:1.5pt 1.5pt 1.5pt 1.5pt" width="51%">
+                                <p class="MsoNormal" style="text-align: justify;"><span style="font-family:宋体;mso-ascii-font-family:Calibri;
+  mso-ascii-theme-font:minor-latin;mso-fareast-font-family:宋体;mso-fareast-theme-font:
+  minor-fareast;mso-hansi-font-family:Calibri;mso-hansi-theme-font:minor-latin">缝纫、服饰、制革和毛皮加工设备</span><span lang="EN-US"><o:p></o:p></span></p>
+                            </td>
+                            <td nowrap="nowrap" style="width:24.0%;border-top:none;border-left:none;
+  border-bottom:inset black 1.0pt;border-right:inset black 1.0pt;mso-border-top-alt:
+  inset black .75pt;mso-border-left-alt:inset black .75pt;mso-border-alt:inset black .75pt;
+  padding:1.5pt 1.5pt 1.5pt 1.5pt" width="24%">
+                                <p class="MsoNormal" style="text-align: justify;"><span lang="EN-US">10-15<o:p></o:p></span></p>
+                            </td>
+                        </tr>
+                        <tr style="mso-yfti-irow:37">
+                            <td colspan="2" nowrap="nowrap" style="width:51.0%;border-top:none;
+  border-left:none;border-bottom:inset black 1.0pt;border-right:inset black 1.0pt;
+  mso-border-top-alt:inset black .75pt;mso-border-left-alt:inset black .75pt;
+  mso-border-alt:inset black .75pt;padding:1.5pt 1.5pt 1.5pt 1.5pt" width="51%">
+                                <p class="MsoNormal" style="text-align: justify;"><span style="font-family:宋体;mso-ascii-font-family:Calibri;
+  mso-ascii-theme-font:minor-latin;mso-fareast-font-family:宋体;mso-fareast-theme-font:
+  minor-fareast;mso-hansi-font-family:Calibri;mso-hansi-theme-font:minor-latin">造纸和印刷机械</span><span lang="EN-US"><o:p></o:p></span></p>
+                            </td>
+                            <td nowrap="nowrap" style="width:24.0%;border-top:none;border-left:none;
+  border-bottom:inset black 1.0pt;border-right:inset black 1.0pt;mso-border-top-alt:
+  inset black .75pt;mso-border-left-alt:inset black .75pt;mso-border-alt:inset black .75pt;
+  padding:1.5pt 1.5pt 1.5pt 1.5pt" width="24%">
+                                <p class="MsoNormal" style="text-align: justify;"><span lang="EN-US">10-20<o:p></o:p></span></p>
+                            </td>
+                        </tr>
+                        <tr style="mso-yfti-irow:38">
+                            <td colspan="2" nowrap="nowrap" style="width:51.0%;border-top:none;
+  border-left:none;border-bottom:inset black 1.0pt;border-right:inset black 1.0pt;
+  mso-border-top-alt:inset black .75pt;mso-border-left-alt:inset black .75pt;
+  mso-border-alt:inset black .75pt;padding:1.5pt 1.5pt 1.5pt 1.5pt" width="51%">
+                                <p class="MsoNormal" style="text-align: justify;"><span style="font-family:宋体;mso-ascii-font-family:Calibri;
+  mso-ascii-theme-font:minor-latin;mso-fareast-font-family:宋体;mso-fareast-theme-font:
+  minor-fareast;mso-hansi-font-family:Calibri;mso-hansi-theme-font:minor-latin">化学药品和中药专用设备</span><span lang="EN-US"><o:p></o:p></span></p>
+                            </td>
+                            <td nowrap="nowrap" style="width:24.0%;border-top:none;border-left:none;
+  border-bottom:inset black 1.0pt;border-right:inset black 1.0pt;mso-border-top-alt:
+  inset black .75pt;mso-border-left-alt:inset black .75pt;mso-border-alt:inset black .75pt;
+  padding:1.5pt 1.5pt 1.5pt 1.5pt" width="24%">
+                                <p class="MsoNormal" style="text-align: justify;"><span lang="EN-US">5-10<o:p></o:p></span></p>
+                            </td>
+                        </tr>
+                        <tr style="mso-yfti-irow:39">
+                            <td colspan="2" nowrap="nowrap" style="width:51.0%;border-top:none;
+  border-left:none;border-bottom:inset black 1.0pt;border-right:inset black 1.0pt;
+  mso-border-top-alt:inset black .75pt;mso-border-left-alt:inset black .75pt;
+  mso-border-alt:inset black .75pt;padding:1.5pt 1.5pt 1.5pt 1.5pt" width="51%">
+                                <p class="MsoNormal" style="text-align: justify;"><span style="font-family:宋体;mso-ascii-font-family:Calibri;
+  mso-ascii-theme-font:minor-latin;mso-fareast-font-family:宋体;mso-fareast-theme-font:
+  minor-fareast;mso-hansi-font-family:Calibri;mso-hansi-theme-font:minor-latin">医疗设备</span><span lang="EN-US"><o:p></o:p></span></p>
+                            </td>
+                            <td nowrap="nowrap" style="width:24.0%;border-top:none;border-left:none;
+  border-bottom:inset black 1.0pt;border-right:inset black 1.0pt;mso-border-top-alt:
+  inset black .75pt;mso-border-left-alt:inset black .75pt;mso-border-alt:inset black .75pt;
+  padding:1.5pt 1.5pt 1.5pt 1.5pt" width="24%">
+                                <p class="MsoNormal" style="text-align: justify;"><span lang="EN-US">5-10<o:p></o:p></span></p>
+                            </td>
+                        </tr>
+                        <tr style="mso-yfti-irow:40">
+                            <td colspan="2" nowrap="nowrap" style="width:51.0%;border-top:none;
+  border-left:none;border-bottom:inset black 1.0pt;border-right:inset black 1.0pt;
+  mso-border-top-alt:inset black .75pt;mso-border-left-alt:inset black .75pt;
+  mso-border-alt:inset black .75pt;padding:1.5pt 1.5pt 1.5pt 1.5pt" width="51%">
+                                <p class="MsoNormal" style="text-align: justify;"><span style="font-family:宋体;mso-ascii-font-family:Calibri;
+  mso-ascii-theme-font:minor-latin;mso-fareast-font-family:宋体;mso-fareast-theme-font:
+  minor-fareast;mso-hansi-font-family:Calibri;mso-hansi-theme-font:minor-latin">电工、电子专用生产设备</span><span lang="EN-US"><o:p></o:p></span></p>
+                            </td>
+                            <td nowrap="nowrap" style="width:24.0%;border-top:none;border-left:none;
+  border-bottom:inset black 1.0pt;border-right:inset black 1.0pt;mso-border-top-alt:
+  inset black .75pt;mso-border-left-alt:inset black .75pt;mso-border-alt:inset black .75pt;
+  padding:1.5pt 1.5pt 1.5pt 1.5pt" width="24%">
+                                <p class="MsoNormal" style="text-align: justify;"><span lang="EN-US">5-10<o:p></o:p></span></p>
+                            </td>
+                        </tr>
+                        <tr style="mso-yfti-irow:41">
+                            <td colspan="2" nowrap="nowrap" style="width:51.0%;border-top:none;
+  border-left:none;border-bottom:inset black 1.0pt;border-right:inset black 1.0pt;
+  mso-border-top-alt:inset black .75pt;mso-border-left-alt:inset black .75pt;
+  mso-border-alt:inset black .75pt;padding:1.5pt 1.5pt 1.5pt 1.5pt" width="51%">
+                                <p class="MsoNormal" style="text-align: justify;"><span style="font-family:宋体;mso-ascii-font-family:Calibri;
+  mso-ascii-theme-font:minor-latin;mso-fareast-font-family:宋体;mso-fareast-theme-font:
+  minor-fareast;mso-hansi-font-family:Calibri;mso-hansi-theme-font:minor-latin">安全生产设备</span><span lang="EN-US"><o:p></o:p></span></p>
+                            </td>
+                            <td nowrap="nowrap" style="width:24.0%;border-top:none;border-left:none;
+  border-bottom:inset black 1.0pt;border-right:inset black 1.0pt;mso-border-top-alt:
+  inset black .75pt;mso-border-left-alt:inset black .75pt;mso-border-alt:inset black .75pt;
+  padding:1.5pt 1.5pt 1.5pt 1.5pt" width="24%">
+                                <p class="MsoNormal" style="text-align: justify;"><span lang="EN-US">10-20<o:p></o:p></span></p>
+                            </td>
+                        </tr>
+                        <tr style="mso-yfti-irow:42">
+                            <td colspan="2" nowrap="nowrap" style="width:51.0%;border-top:none;
+  border-left:none;border-bottom:inset black 1.0pt;border-right:inset black 1.0pt;
+  mso-border-top-alt:inset black .75pt;mso-border-left-alt:inset black .75pt;
+  mso-border-alt:inset black .75pt;padding:1.5pt 1.5pt 1.5pt 1.5pt" width="51%">
+                                <p class="MsoNormal" style="text-align: justify;"><span style="font-family:宋体;mso-ascii-font-family:Calibri;
+  mso-ascii-theme-font:minor-latin;mso-fareast-font-family:宋体;mso-fareast-theme-font:
+  minor-fareast;mso-hansi-font-family:Calibri;mso-hansi-theme-font:minor-latin">邮政专用设备</span><span lang="EN-US"><o:p></o:p></span></p>
+                            </td>
+                            <td nowrap="nowrap" style="width:24.0%;border-top:none;border-left:none;
+  border-bottom:inset black 1.0pt;border-right:inset black 1.0pt;mso-border-top-alt:
+  inset black .75pt;mso-border-left-alt:inset black .75pt;mso-border-alt:inset black .75pt;
+  padding:1.5pt 1.5pt 1.5pt 1.5pt" width="24%">
+                                <p class="MsoNormal" style="text-align: justify;"><span lang="EN-US">10-15<o:p></o:p></span></p>
+                            </td>
+                        </tr>
+                        <tr style="mso-yfti-irow:43">
+                            <td colspan="2" nowrap="nowrap" style="width:51.0%;border-top:none;
+  border-left:none;border-bottom:inset black 1.0pt;border-right:inset black 1.0pt;
+  mso-border-top-alt:inset black .75pt;mso-border-left-alt:inset black .75pt;
+  mso-border-alt:inset black .75pt;padding:1.5pt 1.5pt 1.5pt 1.5pt" width="51%">
+                                <p class="MsoNormal" style="text-align: justify;"><span style="font-family:宋体;mso-ascii-font-family:Calibri;
+  mso-ascii-theme-font:minor-latin;mso-fareast-font-family:宋体;mso-fareast-theme-font:
+  minor-fareast;mso-hansi-font-family:Calibri;mso-hansi-theme-font:minor-latin">环境污染防治设备</span><span lang="EN-US"><o:p></o:p></span></p>
+                            </td>
+                            <td nowrap="nowrap" style="width:24.0%;border-top:none;border-left:none;
+  border-bottom:inset black 1.0pt;border-right:inset black 1.0pt;mso-border-top-alt:
+  inset black .75pt;mso-border-left-alt:inset black .75pt;mso-border-alt:inset black .75pt;
+  padding:1.5pt 1.5pt 1.5pt 1.5pt" width="24%">
+                                <p class="MsoNormal" style="text-align: justify;"><span lang="EN-US">10-20<o:p></o:p></span></p>
+                            </td>
+                        </tr>
+                        <tr style="mso-yfti-irow:44">
+                            <td colspan="2" nowrap="nowrap" style="width:51.0%;border-top:none;
+  border-left:none;border-bottom:inset black 1.0pt;border-right:inset black 1.0pt;
+  mso-border-top-alt:inset black .75pt;mso-border-left-alt:inset black .75pt;
+  mso-border-alt:inset black .75pt;padding:1.5pt 1.5pt 1.5pt 1.5pt" width="51%">
+                                <p class="MsoNormal" style="text-align: justify;"><span style="font-family:宋体;mso-ascii-font-family:Calibri;
+  mso-ascii-theme-font:minor-latin;mso-fareast-font-family:宋体;mso-fareast-theme-font:
+  minor-fareast;mso-hansi-font-family:Calibri;mso-hansi-theme-font:minor-latin">公安专用设备</span><span lang="EN-US"><o:p></o:p></span></p>
+                            </td>
+                            <td nowrap="nowrap" style="width:24.0%;border-top:none;border-left:none;
+  border-bottom:inset black 1.0pt;border-right:inset black 1.0pt;mso-border-top-alt:
+  inset black .75pt;mso-border-left-alt:inset black .75pt;mso-border-alt:inset black .75pt;
+  padding:1.5pt 1.5pt 1.5pt 1.5pt" width="24%">
+                                <p class="MsoNormal" style="text-align: justify;"><span lang="EN-US">3-10<o:p></o:p></span></p>
+                            </td>
+                        </tr>
+                        <tr style="mso-yfti-irow:45">
+                            <td colspan="2" nowrap="nowrap" style="width:51.0%;border-top:none;
+  border-left:none;border-bottom:inset black 1.0pt;border-right:inset black 1.0pt;
+  mso-border-top-alt:inset black .75pt;mso-border-left-alt:inset black .75pt;
+  mso-border-alt:inset black .75pt;padding:1.5pt 1.5pt 1.5pt 1.5pt" width="51%">
+                                <p class="MsoNormal" style="text-align: justify;"><span style="font-family:宋体;mso-ascii-font-family:Calibri;
+  mso-ascii-theme-font:minor-latin;mso-fareast-font-family:宋体;mso-fareast-theme-font:
+  minor-fareast;mso-hansi-font-family:Calibri;mso-hansi-theme-font:minor-latin">水工机械</span><span lang="EN-US"><o:p></o:p></span></p>
+                            </td>
+                            <td nowrap="nowrap" style="width:24.0%;border-top:none;border-left:none;
+  border-bottom:inset black 1.0pt;border-right:inset black 1.0pt;mso-border-top-alt:
+  inset black .75pt;mso-border-left-alt:inset black .75pt;mso-border-alt:inset black .75pt;
+  padding:1.5pt 1.5pt 1.5pt 1.5pt" width="24%">
+                                <p class="MsoNormal" style="text-align: justify;"><span lang="EN-US">10-20<o:p></o:p></span></p>
+                            </td>
+                        </tr>
+                        <tr style="mso-yfti-irow:46">
+                            <td colspan="2" nowrap="nowrap" style="width:51.0%;border-top:none;
+  border-left:none;border-bottom:inset black 1.0pt;border-right:inset black 1.0pt;
+  mso-border-top-alt:inset black .75pt;mso-border-left-alt:inset black .75pt;
+  mso-border-alt:inset black .75pt;padding:1.5pt 1.5pt 1.5pt 1.5pt" width="51%">
+                                <p class="MsoNormal" style="text-align: justify;"><span style="font-family:宋体;mso-ascii-font-family:Calibri;
+  mso-ascii-theme-font:minor-latin;mso-fareast-font-family:宋体;mso-fareast-theme-font:
+  minor-fareast;mso-hansi-font-family:Calibri;mso-hansi-theme-font:minor-latin">殡葬设备及用品</span><span lang="EN-US"><o:p></o:p></span></p>
+                            </td>
+                            <td nowrap="nowrap" style="width:24.0%;border-top:none;border-left:none;
+  border-bottom:inset black 1.0pt;border-right:inset black 1.0pt;mso-border-top-alt:
+  inset black .75pt;mso-border-left-alt:inset black .75pt;mso-border-alt:inset black .75pt;
+  padding:1.5pt 1.5pt 1.5pt 1.5pt" width="24%">
+                                <p class="MsoNormal" style="text-align: justify;"><span lang="EN-US">5-10<o:p></o:p></span></p>
+                            </td>
+                        </tr>
+                        <tr style="mso-yfti-irow:47">
+                            <td colspan="2" nowrap="nowrap" style="width:51.0%;border-top:none;
+  border-left:none;border-bottom:inset black 1.0pt;border-right:inset black 1.0pt;
+  mso-border-top-alt:inset black .75pt;mso-border-left-alt:inset black .75pt;
+  mso-border-alt:inset black .75pt;padding:1.5pt 1.5pt 1.5pt 1.5pt" width="51%">
+                                <p class="MsoNormal" style="text-align: justify;"><span style="font-family:宋体;mso-ascii-font-family:Calibri;
+  mso-ascii-theme-font:minor-latin;mso-fareast-font-family:宋体;mso-fareast-theme-font:
+  minor-fareast;mso-hansi-font-family:Calibri;mso-hansi-theme-font:minor-latin">铁路运输设备</span><span lang="EN-US"><o:p></o:p></span></p>
+                            </td>
+                            <td nowrap="nowrap" style="width:24.0%;border-top:none;border-left:none;
+  border-bottom:inset black 1.0pt;border-right:inset black 1.0pt;mso-border-top-alt:
+  inset black .75pt;mso-border-left-alt:inset black .75pt;mso-border-alt:inset black .75pt;
+  padding:1.5pt 1.5pt 1.5pt 1.5pt" width="24%">
+                                <p class="MsoNormal" style="text-align: justify;"><span lang="EN-US">10-20<o:p></o:p></span></p>
+                            </td>
+                        </tr>
+                        <tr style="mso-yfti-irow:48">
+                            <td colspan="2" nowrap="nowrap" style="width:51.0%;border-top:none;
+  border-left:none;border-bottom:inset black 1.0pt;border-right:inset black 1.0pt;
+  mso-border-top-alt:inset black .75pt;mso-border-left-alt:inset black .75pt;
+  mso-border-alt:inset black .75pt;padding:1.5pt 1.5pt 1.5pt 1.5pt" width="51%">
+                                <p class="MsoNormal" style="text-align: justify;"><span style="font-family:宋体;mso-ascii-font-family:Calibri;
+  mso-ascii-theme-font:minor-latin;mso-fareast-font-family:宋体;mso-fareast-theme-font:
+  minor-fareast;mso-hansi-font-family:Calibri;mso-hansi-theme-font:minor-latin">水上交通运输设备</span><span lang="EN-US"><o:p></o:p></span></p>
+                            </td>
+                            <td nowrap="nowrap" style="width:24.0%;border-top:none;border-left:none;
+  border-bottom:inset black 1.0pt;border-right:inset black 1.0pt;mso-border-top-alt:
+  inset black .75pt;mso-border-left-alt:inset black .75pt;mso-border-alt:inset black .75pt;
+  padding:1.5pt 1.5pt 1.5pt 1.5pt" width="24%">
+                                <p class="MsoNormal" style="text-align: justify;"><span lang="EN-US">10-20<o:p></o:p></span></p>
+                            </td>
+                        </tr>
+                        <tr style="mso-yfti-irow:49">
+                            <td colspan="2" nowrap="nowrap" style="width:51.0%;border-top:none;
+  border-left:none;border-bottom:inset black 1.0pt;border-right:inset black 1.0pt;
+  mso-border-top-alt:inset black .75pt;mso-border-left-alt:inset black .75pt;
+  mso-border-alt:inset black .75pt;padding:1.5pt 1.5pt 1.5pt 1.5pt" width="51%">
+                                <p class="MsoNormal" style="text-align: justify;"><span style="font-family:宋体;mso-ascii-font-family:Calibri;
+  mso-ascii-theme-font:minor-latin;mso-fareast-font-family:宋体;mso-fareast-theme-font:
+  minor-fareast;mso-hansi-font-family:Calibri;mso-hansi-theme-font:minor-latin">航空器及其配套设备</span><span lang="EN-US"><o:p></o:p></span></p>
+                            </td>
+                            <td nowrap="nowrap" style="width:24.0%;border-top:none;border-left:none;
+  border-bottom:inset black 1.0pt;border-right:inset black 1.0pt;mso-border-top-alt:
+  inset black .75pt;mso-border-left-alt:inset black .75pt;mso-border-alt:inset black .75pt;
+  padding:1.5pt 1.5pt 1.5pt 1.5pt" width="24%">
+                                <p class="MsoNormal" style="text-align: justify;"><span lang="EN-US">10-20<o:p></o:p></span></p>
+                            </td>
+                        </tr>
+                        <tr style="mso-yfti-irow:50">
+                            <td colspan="2" nowrap="nowrap" style="width:51.0%;border-top:none;
+  border-left:none;border-bottom:inset black 1.0pt;border-right:inset black 1.0pt;
+  mso-border-top-alt:inset black .75pt;mso-border-left-alt:inset black .75pt;
+  mso-border-alt:inset black .75pt;padding:1.5pt 1.5pt 1.5pt 1.5pt" width="51%">
+                                <p class="MsoNormal" style="text-align: justify;"><span style="font-family:宋体;mso-ascii-font-family:Calibri;
+  mso-ascii-theme-font:minor-latin;mso-fareast-font-family:宋体;mso-fareast-theme-font:
+  minor-fareast;mso-hansi-font-family:Calibri;mso-hansi-theme-font:minor-latin">专用仪器仪表</span><span lang="EN-US"><o:p></o:p></span></p>
+                            </td>
+                            <td nowrap="nowrap" style="width:24.0%;border-top:none;border-left:none;
+  border-bottom:inset black 1.0pt;border-right:inset black 1.0pt;mso-border-top-alt:
+  inset black .75pt;mso-border-left-alt:inset black .75pt;mso-border-alt:inset black .75pt;
+  padding:1.5pt 1.5pt 1.5pt 1.5pt" width="24%">
+                                <p class="MsoNormal" style="text-align: justify;"><span lang="EN-US">5-10<o:p></o:p></span></p>
+                            </td>
+                        </tr>
+                        <tr style="mso-yfti-irow:51">
+                            <td colspan="2" nowrap="nowrap" style="width:51.0%;border-top:none;
+  border-left:none;border-bottom:inset black 1.0pt;border-right:inset black 1.0pt;
+  mso-border-top-alt:inset black .75pt;mso-border-left-alt:inset black .75pt;
+  mso-border-alt:inset black .75pt;padding:1.5pt 1.5pt 1.5pt 1.5pt" width="51%">
+                                <p class="MsoNormal" style="text-align: justify;"><span style="font-family:宋体;mso-ascii-font-family:Calibri;
+  mso-ascii-theme-font:minor-latin;mso-fareast-font-family:宋体;mso-fareast-theme-font:
+  minor-fareast;mso-hansi-font-family:Calibri;mso-hansi-theme-font:minor-latin">文艺设备</span><span lang="EN-US"><o:p></o:p></span></p>
+                            </td>
+                            <td nowrap="nowrap" style="width:24.0%;border-top:none;border-left:none;
+  border-bottom:inset black 1.0pt;border-right:inset black 1.0pt;mso-border-top-alt:
+  inset black .75pt;mso-border-left-alt:inset black .75pt;mso-border-alt:inset black .75pt;
+  padding:1.5pt 1.5pt 1.5pt 1.5pt" width="24%">
+                                <p class="MsoNormal" style="text-align: justify;"><span lang="EN-US">5-15<o:p></o:p></span></p>
+                            </td>
+                        </tr>
+                        <tr style="mso-yfti-irow:52">
+                            <td colspan="2" nowrap="nowrap" style="width:51.0%;border-top:none;
+  border-left:none;border-bottom:inset black 1.0pt;border-right:inset black 1.0pt;
+  mso-border-top-alt:inset black .75pt;mso-border-left-alt:inset black .75pt;
+  mso-border-alt:inset black .75pt;padding:1.5pt 1.5pt 1.5pt 1.5pt" width="51%">
+                                <p class="MsoNormal" style="text-align: justify;"><span style="font-family:宋体;mso-ascii-font-family:Calibri;
+  mso-ascii-theme-font:minor-latin;mso-fareast-font-family:宋体;mso-fareast-theme-font:
+  minor-fareast;mso-hansi-font-family:Calibri;mso-hansi-theme-font:minor-latin">体育设备</span><span lang="EN-US"><o:p></o:p></span></p>
+                            </td>
+                            <td nowrap="nowrap" style="width:24.0%;border-top:none;border-left:none;
+  border-bottom:inset black 1.0pt;border-right:inset black 1.0pt;mso-border-top-alt:
+  inset black .75pt;mso-border-left-alt:inset black .75pt;mso-border-alt:inset black .75pt;
+  padding:1.5pt 1.5pt 1.5pt 1.5pt" width="24%">
+                                <p class="MsoNormal" style="text-align: justify;"><span lang="EN-US">5-15<o:p></o:p></span></p>
+                            </td>
+                        </tr>
+                        <tr style="mso-yfti-irow:53">
+                            <td colspan="2" nowrap="nowrap" style="width:51.0%;border-top:none;
+  border-left:none;border-bottom:inset black 1.0pt;border-right:inset black 1.0pt;
+  mso-border-top-alt:inset black .75pt;mso-border-left-alt:inset black .75pt;
+  mso-border-alt:inset black .75pt;padding:1.5pt 1.5pt 1.5pt 1.5pt" width="51%">
+                                <p class="MsoNormal" style="text-align: justify;"><span style="font-family:宋体;mso-ascii-font-family:Calibri;
+  mso-ascii-theme-font:minor-latin;mso-fareast-font-family:宋体;mso-fareast-theme-font:
+  minor-fareast;mso-hansi-font-family:Calibri;mso-hansi-theme-font:minor-latin">娱乐设备</span><span lang="EN-US"><o:p></o:p></span></p>
+                            </td>
+                            <td nowrap="nowrap" style="width:24.0%;border-top:none;border-left:none;
+  border-bottom:inset black 1.0pt;border-right:inset black 1.0pt;mso-border-top-alt:
+  inset black .75pt;mso-border-left-alt:inset black .75pt;mso-border-alt:inset black .75pt;
+  padding:1.5pt 1.5pt 1.5pt 1.5pt" width="24%">
+                                <p class="MsoNormal" style="text-align: justify;"><span lang="EN-US">5-15<o:p></o:p></span></p>
+                            </td>
+                        </tr>
+                        <tr style="mso-yfti-irow:54">
+                            <td nowrap="nowrap" rowspan="2" style="width:24.0%;border:inset black 1.0pt;
+  border-top:none;mso-border-top-alt:inset black .75pt;mso-border-alt:inset black .75pt;
+  padding:1.5pt 1.5pt 1.5pt 1.5pt" width="24%">
+                                <p class="MsoNormal" style="text-align: justify;"><span style="font-family:宋体;mso-ascii-font-family:Calibri;
+  mso-ascii-theme-font:minor-latin;mso-fareast-font-family:宋体;mso-fareast-theme-font:
+  minor-fareast;mso-hansi-font-family:Calibri;mso-hansi-theme-font:minor-latin">家具、用具及装具</span><span lang="EN-US"><o:p></o:p></span></p>
+                            </td>
+                            <td colspan="2" nowrap="nowrap" style="width:51.0%;border-top:none;
+  border-left:none;border-bottom:inset black 1.0pt;border-right:inset black 1.0pt;
+  mso-border-top-alt:inset black .75pt;mso-border-left-alt:inset black .75pt;
+  mso-border-alt:inset black .75pt;padding:1.5pt 1.5pt 1.5pt 1.5pt" width="51%">
+                                <p class="MsoNormal" style="text-align: justify;"><span style="font-family:宋体;mso-ascii-font-family:Calibri;
+  mso-ascii-theme-font:minor-latin;mso-fareast-font-family:宋体;mso-fareast-theme-font:
+  minor-fareast;mso-hansi-font-family:Calibri;mso-hansi-theme-font:minor-latin">家具</span><span lang="EN-US"><o:p></o:p></span></p>
+                            </td>
+                            <td nowrap="nowrap" style="width:24.0%;border-top:none;border-left:none;
+  border-bottom:inset black 1.0pt;border-right:inset black 1.0pt;mso-border-top-alt:
+  inset black .75pt;mso-border-left-alt:inset black .75pt;mso-border-alt:inset black .75pt;
+  padding:1.5pt 1.5pt 1.5pt 1.5pt" width="24%">
+                                <p class="MsoNormal" style="text-align: justify;"><span style="font-family:宋体;mso-ascii-font-family:Calibri;
+  mso-ascii-theme-font:minor-latin;mso-fareast-font-family:宋体;mso-fareast-theme-font:
+  minor-fareast;mso-hansi-font-family:Calibri;mso-hansi-theme-font:minor-latin">不低于</span><span lang="EN-US">15<o:p></o:p></span></p>
+                            </td>
+                        </tr>
+                        <tr style="mso-yfti-irow:55;mso-yfti-lastrow:yes">
+                            <td colspan="2" nowrap="nowrap" style="width:51.0%;border-top:none;
+  border-left:none;border-bottom:inset black 1.0pt;border-right:inset black 1.0pt;
+  mso-border-top-alt:inset black .75pt;mso-border-left-alt:inset black .75pt;
+  mso-border-alt:inset black .75pt;padding:1.5pt 1.5pt 1.5pt 1.5pt" width="51%">
+                                <p class="MsoNormal" style="text-align: justify;"><span style="font-family:宋体;mso-ascii-font-family:Calibri;
+  mso-ascii-theme-font:minor-latin;mso-fareast-font-family:宋体;mso-fareast-theme-font:
+  minor-fareast;mso-hansi-font-family:Calibri;mso-hansi-theme-font:minor-latin">用具、装具</span><span lang="EN-US"><o:p></o:p></span></p>
+                            </td>
+                            <td nowrap="nowrap" style="width:24.0%;border-top:none;border-left:none;
+  border-bottom:inset black 1.0pt;border-right:inset black 1.0pt;mso-border-top-alt:
+  inset black .75pt;mso-border-left-alt:inset black .75pt;mso-border-alt:inset black .75pt;
+  padding:1.5pt 1.5pt 1.5pt 1.5pt" width="24%">
+                                <p class="MsoNormal" style="text-align: justify;"><span style="font-family:宋体;mso-ascii-font-family:Calibri;
+  mso-ascii-theme-font:minor-latin;mso-fareast-font-family:宋体;mso-fareast-theme-font:
+  minor-fareast;mso-hansi-font-family:Calibri;mso-hansi-theme-font:minor-latin">不低于</span><span lang="EN-US">5<o:p></o:p></span></p>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <h2 class="chapter">
+                    第二章 总则
+                </h2>
+                <p>上市公司存在工程机械相关产品的按揭销售、融资租赁、先租后售等销售模式的，应当在年度报告“公司业务概要”部分披露其具体的业务模式和主要流程，报告期销售金额及占营业收入的比例，审议程序和信息披露管理的具体情况。相关合同中存在的回购、垫付保证金（或月供、租金）、承担追偿责任等导致公司现金流出或者承担其他风险条款的，应当结合合同条款的设置情况，说明销售收入确认标准及其合理性，说明预计风险损失的情况及其会计处理。公司应当披露报告期内触发上述条款承担义务的情况（包括但不限于会计处理、涉及金额、对主要财务指标的影响等），评估下一报告期的风险情况，披露公司的应对措施并作出相应风险提示。
+                    </p>
+                <h2 class="chapter">
+                    第二章 总则
+                </h2>
+                <p>上市公司存在工程机械相关产品的按揭销售、融资租赁、先租后售等销售模式的，应当在年度报告“公司业务概要”部分披露其具体的业务模式和主要流程，报告期销售金额及占营业收入的比例，审议程序和信息披露管理的具体情况。相关合同中存在的回购、垫付保证金（或月供、租金）、承担追偿责任等导致公司现金流出或者承担其他风险条款的，应当结合合同条款的设置情况，说明销售收入确认标准及其合理性，说明预计风险损失的情况及其会计处理。公司应当披露报告期内触发上述条款承担义务的情况（包括但不限于会计处理、涉及金额、对主要财务指标的影响等），评估下一报告期的风险情况，披露公司的应对措施并作出相应风险提示。
+                    </p>
+                <h2 class="chapter">
+                    第二章 总则
+                </h2>
+                <p>上市公司存在工程机械相关产品的按揭销售、融资租赁、先租后售等销售模式的，应当在年度报告“公司业务概要”部分披露其具体的业务模式和主要流程，报告期销售金额及占营业收入的比例，审议程序和信息披露管理的具体情况。相关合同中存在的回购、垫付保证金（或月供、租金）、承担追偿责任等导致公司现金流出或者承担其他风险条款的，应当结合合同条款的设置情况，说明销售收入确认标准及其合理性，说明预计风险损失的情况及其会计处理。公司应当披露报告期内触发上述条款承担义务的情况（包括但不限于会计处理、涉及金额、对主要财务指标的影响等），评估下一报告期的风险情况，披露公司的应对措施并作出相应风险提示。
+                    </p>
+            </div>
+        </div>
+    </div>
+    <div class="show_footer">
+        <a href="#" class="show_items" id="share_item">
+            <span class="show_shareIcon"></span>
+            <span class="show_share">分享</span>
+        </a>
+        <a href="#" class="show_items">
+            <span class="show_collectIcon"></span>
+            <span class="show_collect">收藏</span>
+        </a>
+        <a href="#" class="show_items">
+            <span class="show_relativeIcon"></span>
+            <span class="show_relative">相关内容</span>
+        </a>
+    </div>
+    <a href="javascript:;" class="show_list">目录</a>
+    <a href="javascript:;" class="returnTop">顶部</a>
+    <ul class="show_list_con">
+        <li>第1章</li>
+        <li>第2章</li>
+        <li>第3章</li>
+        <li>第4章</li>
+        <li>第5章</li>
+        <li>第6章</li>
+        <li>第7章</li>
+        <li>第8章</li>
+        <li>第1章</li>
+        <li>第2章</li>
+        <li>第3章</li>
+        <li>第4章</li>
+        <li>第5章</li>
+        <li>第6章</li>
+        <li>第7章</li>
+        <li>第8章</li>
+        <li>第1章</li>
+        <li>第2章</li>
+        <li>第3章</li>
+        <li>第4章</li>
+        <li>第5章</li>
+        <li>第6章</li>
+        <li>第7章</li>
+        <li>第8章</li>
+        <li>第1章</li>
+        <li>第8章</li>
+        <li>第1章</li>
+        <li>第2章</li>
+        <li>第3章</li>
+        <li>第4章</li>
+        <li>第5章</li>
+        <li>第6章</li>
+        <li>第7章</li>
+        <li>第8章</li>
+        <li>第1章</li>
+        <li>第2章</li>
+        <li>第3章</li>
+        <li>第2章</li>
+        <li>第3章</li>
+        <li>第4章</li>
+        <li>第5章</li>
+        <li>第6章</li>
+        <li>第7章</li>
+        <li>第8章</li>
+    </ul>
+    <a href="javascript:;" class="show_shadow"></a>
+
+    <div class="am-share">
+        <h3 class="am-share-title">分享到</h3>
+        <ul class="am-share-sns">
+            <li><a href="#"> <i class="share-icon-weibo"></i> <span>新浪微博</span> </a></li>
+            <li><a href="#"> <i class="share-icon-weibo"></i> <span>新浪微博</span> </a></li>
+            <li><a href="#"> <i class="share-icon-weibo"></i> <span>新浪微博</span> </a></li>
+            <li><a href="#"> <i class="share-icon-weibo"></i> <span>新浪微博</span> </a></li>
+        </ul>
+        <div class="am-share-footer">
+            <button class="share_btn">取消</button>
+        </div>
+    </div>
+</div>
+<script>
+$(function(){
+    //分享show_share
+    function toshare() {
+        $(".am-share").addClass("am-modal-active");
+        if ($(".sharebg").length > 0) {
+            $(".sharebg").addClass("sharebg-active");
+        } else {
+            $("body").append('<div class="sharebg"></div>');
+            $(".sharebg").addClass("sharebg-active");
+        }
+        $(".sharebg-active,.share_btn").click(function () {
+            $(".am-share").removeClass("am-modal-active");
+            setTimeout(function () {
+                $(".sharebg-active").removeClass("sharebg-active");
+                $(".sharebg").remove();
+            }, 300);
+        })
+    }
+    $("#share_item").click(function(){
+        toshare();
+    })
+
+
+    //目录show_list
+    $(".show_list").click(function(){
+        $(".show_shadow").css("z-index","90");
+        $(".show_list_con").css("-webkit-animation","listshow 0.3s ease forwards")
+    })
+    $(".show_shadow").click(function(){
+        $(".show_shadow").css("z-index","-5");
+        $(".show_list_con").css({"-webkit-animation":"listhide 0.3s ease forwards","-webkit-overflow-scrolling":"touch"})
+    })
+
+    //returnTop
+    $('.returnTop').click(function(){
+        $('.inner').animate({scrollTop: '0px'}, 800);
+        var container = $('.inner');
+        $(container).scrollTop(
+            0
+        );
+    })
+    // dropload
+    var dropload = $('.inner').dropload({
+        domDown : {
+            domClass   : 'dropload-down',
+            domRefresh : '<div class="dropload-refresh">↑上拉加载更多</div>',
+            domLoad    : '<div class="dropload-load"><span class="loading"></span>加载中...</div>',
+            domNoData  : '<div class="dropload-noData">暂无数据</div>'
+        },
+        loadDownFn : function(me){
+            $.ajax({
+                type: 'GET',
+                url: 'json/show_more.json',
+                dataType: 'json',
+                success: function(data){
+                    var result = '';
+                    for(var i = 0; i < data.lists.length; i++){
+                        result += '<h2 class="chapter">'+data.lists[i].chapter+'</h2>' +
+                            '<p>'+data.lists[i].content+'<p>'
+                    }
+                    // 为了测试，延迟1秒加载
+                    setTimeout(function(){
+                        $('.show_text').append(result);
+                        // 每次数据加载完，必须重置
+                        dropload.resetload();
+                    },100);
+                },
+                error: function(xhr, type){
+                    alert('Ajax error!');
+                    // 即使加载出错，也得重置
+                    dropload.resetload();
+                }
+            });
+        }
+    });
+
+    var table=document.getElementsByTagName("table")[0];
+    console.log(table.offsetWidth);
+    var box=document.getElementById('table_border');
+    box.style.width=table.offsetWidth;
+    box.style.height=0.1+'rem';
+    box.style.borderRadius=0.1+'rem';
+})
+</script>
+</body>
+</html>

@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="js/size.js"></script>
+    <script src="js/touch.js"></script>
+    <script src="js/zepto.min.js"></script>
+</head>
+<style>
+    body,html{
+        width:100%;height:100%;margin:0;padding:0;
+        overflow-x: scroll;
+    }
+    table{
+        width:100%;height:auto;
+        -moz-box-flex: 1;-webkit-box-flex: 1;
+        box-flex:1;text-align: center;font-size: 0.24rem;
+        border-collapse: collapse;color:#323232;
+        margin-bottom: 0.15rem;
+    }
+    .box{
+        width:100%;height:100%;
+        background: red;font-size: 0.4rem;
+        color:white;position:absolute;
+        left:0;top:0;
+        z-index: -5;opacity: 0;
+       /* animation: myfirst 1s linear forwards;*/
+    }
+    @keyframes myfirst {
+        0%{
+            opacity: 0;z-index: -5;
+            width:10%;height:10%;
+            position: absolute;
+            left:40%;top:40%;
+            transform: rotate(0deg)
+        }
+        100%{
+            opacity: 1;z-index: 99;
+            width:100%;height:100%;
+            transform: rotate(90deg)
+        }
+    }
+</style>
+<body>
+<div class="box">
+        zhelishi
+</div>
+
+<table border="1" cellpadding="0" cellspacing="0" class="MsoNormalTable" style="border-collapse:collapse;border:none;mso-border-alt:outset black .75pt;
+ mso-yfti-tbllook:1184;mso-padding-alt:1.5pt 1.5pt 1.5pt 1.5pt">
+    <tbody>
+    <tr>
+        <td>这里是每一行的每一列哦</td>
+        <td>这里是每一行的每一列哦</td>
+        <td>这里是每一行的每一列哦</td>
+        <td>这里是每一行的每一列哦</td>
+        <td>这里是每一行的每一列哦</td>
+        <td>这里是每一行的每一列哦</td>
+        <td>这里是每一行的每一列哦</td>
+        <td>这里是每一行的每一列哦</td>
+    </tr>
+    <tr>
+        <td>这里是每一行的每一列哦</td>
+        <td>这里是每一行的每一列哦</td>
+        <td>这里是每一行的每一列哦</td>
+        <td>这里是每一行的每一列哦</td>
+        <td>这里是每一行的每一列哦</td>
+        <td>这里是每一行的每一列哦</td>
+        <td>这里是每一行的每一列哦</td>
+        <td>这里是每一行的每一列哦</td>
+    </tr>
+    <tr>
+        <td>这里是每一行的每一列哦</td>
+        <td>这里是每一行的每一列哦</td>
+        <td>这里是每一行的每一列哦</td>
+        <td>这里是每一行的每一列哦</td>
+        <td>这里是每一行的每一列哦</td>
+        <td>这里是每一行的每一列哦</td>
+        <td>这里是每一行的每一列哦</td>
+        <td>这里是每一行的每一列哦</td>
+    </tr>
+    <tr>
+        <td>这里是每一行的每一列哦</td>
+        <td>这里是每一行的每一列哦</td>
+        <td>这里是每一行的每一列哦</td>
+        <td>这里是每一行的每一列哦</td>
+        <td>这里是每一行的每一列哦</td>
+        <td>这里是每一行的每一列哦</td>
+        <td>这里是每一行的每一列哦</td>
+        <td>这里是每一行的每一列哦</td>
+    </tr>
+    <tr>
+        <td>这里是每一行的每一列哦</td>
+        <td>这里是每一行的每一列哦</td>
+        <td>这里是每一行的每一列哦</td>
+        <td>这里是每一行的每一列哦</td>
+        <td>这里是每一行的每一列哦</td>
+        <td>这里是每一行的每一列哦</td>
+        <td>这里是每一行的每一列哦</td>
+        <td>这里是每一行的每一列哦</td>
+    </tr>
+    </tbody>
+</table>
+</body>
+<script>
+    var table=document.getElementsByTagName("table")[0];
+    var box=document.getElementsByClassName("box")[0];
+    var w=document.body.clientWidth;
+    var h=document.body.clientHeight;
+    table.onclick=function(){
+        box.style.cssText="width:"+h+";height:"+w+";background:pink;z-index:5;opacity:1;";
+    }
+</script>
+</html>
